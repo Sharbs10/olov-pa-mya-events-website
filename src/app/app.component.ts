@@ -9,5 +9,5 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'olov-pa-mya-events-website';
+  title = 'OLOV PA MYA Events Website';
 }
