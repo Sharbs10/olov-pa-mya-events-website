@@ -1,11 +1,25 @@
-<div class="home-container">
-    <div class="background-slideshow">
-      <img src="assets/images/CurrentMYA.JPG" class="active">
-      <img src="assets/images/PSPeeps.jpg">
+<div class="grid-container">
+  <main class="main-content">
+    <div class="home-container">
+      <!-- <div class="background-slideshow">
+        <img src="assets/images/CurrentMYA.JPG" class="active">
+        <img src="assets/images/PSPeeps.jpg">
+      </div> -->
+      <!-- <div class="slideshow-container">
+        <img [src]="images[currentIndex]" alt="Slideshow Image" class="slide">
+      </div> -->
+      <div *ngIf="images.length > 0">
+        <img [src]="images[currentIndex]" alt="Slideshow Image" />
+      </div>
+      <div class="diagonal-slash"></div>
+      <div class="event-poster">
+        <div *ngIf="pImages.length > 0">
+          <img [src]="pImages[pCurrentIndex]" alt="Events Slideshow Image" (click)="goToEvents()" />
+        </div>
+        <!-- <img src="assets/images/Puttshack.JPG" (click)="goToEvents()">
+        <img src="assets/images/StSMass.JPG" (click)="goToEvents()"> -->
+      </div>
     </div>
-    <div class="diagonal-slash"></div>
-    <div class="event-poster">
-      <img src="assets/images/Puttshack.JPG" (click)="goToEvents()">
-      <img src="assets/images/StSMass.JPG" (click)="goToEvents()">
-    </div>
-  </div>
+  </main>
+</div>
+
