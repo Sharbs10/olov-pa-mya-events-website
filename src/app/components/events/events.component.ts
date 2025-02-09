@@ -45,6 +45,23 @@ export class EventsComponent implements OnInit, OnDestroy {
     });
   }
 
+  // 🔹 Stop slideshow on hover
+  pausePSlideshow() {
+    console.log("🔹 Slideshow paused");
+    if (this.pIntervalId) {
+      clearInterval(this.pIntervalId);
+      this.pIntervalId = null;
+    }
+  }
+
+  // 🔹 Resume slideshow on hover out
+  resumePSlideshow() {
+    console.log("🔹 Slideshow resumed");
+    if (!this.pIntervalId) {
+      this.startPSlideshow();
+    }
+  }
+
   ngOnDestroy() {  
     if (this.pIntervalId) {
       clearInterval(this.pIntervalId);

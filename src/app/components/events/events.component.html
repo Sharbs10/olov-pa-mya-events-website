@@ -10,14 +10,15 @@
         </nav>
       </section>
     <main class="main-content">
-        <div class="image-container">            
-            <div class="slideshow">
+        <div class="eImage-container">            
+            <div class="eSlideshow">
               <img 
               *ngIf="pImages.length > 0"
               [src]="pImages[pCurrentIndex]"
               alt="Event Poster"
-              class="event-poster"
-              
+              class="eEvent-poster"
+              (mouseenter)="pausePSlideshow()"  
+              (mouseleave)="resumePSlideshow()" 
             />
             </div>
         </div>
