@@ -1,25 +1,36 @@
 <div class="grid-container">
+  <section class="left-sidebar">
+    <nav>
+      <ul>
+        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/events">Events</a></li>
+        <li><a routerLink="/calendar">Calendar</a></li>
+        <li><a routerLink="/board">Board</a></li>
+      </ul>
+    </nav>
+  </section>
   <main class="main-content">
-    <div class="home-container">
-      <!-- <div class="background-slideshow">
-        <img src="assets/images/CurrentMYA.JPG" class="active">
-        <img src="assets/images/PSPeeps.jpg">
-      </div> -->
-      <!-- <div class="slideshow-container">
-        <img [src]="images[currentIndex]" alt="Slideshow Image" class="slide">
-      </div> -->
-      <div *ngIf="images.length > 0">
-        <img [src]="images[currentIndex]" alt="Slideshow Image" />
-      </div>
-      <div class="diagonal-slash"></div>
-      <div class="event-poster">
-        <div *ngIf="pImages.length > 0">
-          <img [src]="pImages[pCurrentIndex]" alt="Events Slideshow Image" (click)="goToEvents()" />
-        </div>
-        <!-- <img src="assets/images/Puttshack.JPG" (click)="goToEvents()">
-        <img src="assets/images/StSMass.JPG" (click)="goToEvents()"> -->
-      </div>
+    <div class="background-slideshow" *ngIf="images.length > 0">
+      <img 
+        *ngFor="let image of images; let i = index"
+        [src]="image"
+        [class.active]="i === currentIndex"
+        alt="Background image {{ i + 1 }}"
+      />
+      <!-- <img [src]="images[currentIndex]" alt="Slideshow Image" /> -->
     </div>
+    <div class="image-container">
+      <img src="assets/images/tCross.png" alt="Transparent Image" class="transparent-image">
+      <div class="slideshow">
+        <img 
+        *ngIf="pImages.length > 0"
+        [src]="pImages[pCurrentIndex]"
+        alt="Event Poster"
+        class="event-poster"
+        (click)="goToEvents()"
+      />
+      </div>
+    </div> 
   </main>
 </div>
 

@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -55,7 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.currentIndex = (this.currentIndex + 1) % this.images.length;
           console.log("🔹 Changing slide to index:", this.currentIndex);
         });
-      }, 3000);
+      }, 6000);
     });
   }
   
@@ -69,7 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.pCurrentIndex = (this.pCurrentIndex + 1) % this.pImages.length;
           console.log("🔹 Changing Event slide to index:", this.pCurrentIndex);
         });
-      }, 3000);
+      }, 8000);
     });
   }
 
@@ -81,32 +82,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       clearInterval(this.pIntervalId);
     }
   }
-
-  // startSlideshow() {
-  //   console.log("🔹 Slideshow started");
   
-  //   let counter = 0; // Track iterations
-  //   const updateSlide = () => {
-  //     if (counter >= 5) { // Stop after 5 iterations for debugging
-  //       console.log("🔹 Stopping slideshow after 5 iterations");
-  //       return;
-  //     }
-  
-  //     this.currentIndex = (this.currentIndex + 1) % this.images.length;
-  //     console.log("🔹 Changing slide to index:", this.currentIndex);
-  
-  //     counter++;
-  
-  //     setTimeout(updateSlide, 3000); // Wait 3 seconds before updating again
-  //   };
-  
-  //   updateSlide();
-  // }
-  
-
-  // ngOnDestroy() {
-  //   if (this.intervalId) {
-  //     clearInterval(this.intervalId); // Prevent memory leaks
-  //   }
-  // }
+  navigateToEvent(index: number) {
+    console.log(`Navigating to event at index: ${index}`);
+    // Replace with actual navigation logic
+    this.router.navigate(['/events', index]);
+  }  
 }
