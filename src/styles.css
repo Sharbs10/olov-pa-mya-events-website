@@ -49,3 +49,24 @@ nav {
     color: white;
     text-decoration: none;
   }
+
+  .board-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 20px; /* Adjust spacing as needed */
+    padding: 20px;
+    justify-items: center; /* Center items horizontally */
+    align-items: center;   /* Center items vertically */
+  }
+  
+  .member {
+    text-align: center;
+  }
+  
+  .member img {
+    max-width: 500px;  /* Adjust as needed for a consistent size */
+    height: 500px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 8px;  /* Optional: rounds the corners */
+  }
