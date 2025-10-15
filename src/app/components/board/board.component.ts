@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-board',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
