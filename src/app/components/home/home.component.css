@@ -55,13 +55,14 @@
   }
 }
 
+
+
 @media (max-width: 768px) {
   .home-grid-container {
     display: grid;
     grid-template-columns: 1fr;  /* single column */
     /* Let rows size automatically based on content */
-    grid-auto-rows: auto;
-    gap: 50px;                   /* spacing between rows */
+    grid-auto-rows: auto;   
     padding: 20px;               /* optional: padding around container */
   }
 
