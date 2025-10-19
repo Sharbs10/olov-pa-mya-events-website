@@ -57,6 +57,13 @@
 
 /* 📱 Mobile adjustments */
 @media (max-width: 768px) {
+
+  .home-page {
+    align-items: flex-start;      /* always start below header */
+    padding-top: 20px;            /* space below header */
+    min-height: auto;             /* allow height to grow with content */
+  }
+
   .home-grid-container {
     grid-template-columns: 1fr;    /* stack items */
     grid-auto-rows: auto;          /* rows size naturally */
