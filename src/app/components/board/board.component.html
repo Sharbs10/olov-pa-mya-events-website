@@ -1,14 +1,7 @@
-<div class="grid-container">
-    <section class="left-sidebar">
-        <nav>
-          <ul>
-            <li><a routerLink="/">Home</a></li>
-            <li><a routerLink="/events">Events</a></li>
-            <li><a routerLink="/calendar">Calendar</a></li>
-            <li><a routerLink="/board">Board</a></li>
-          </ul>
-        </nav>
-      </section>
+
+<header class="home-header" routerLink="/">
+  Our Lay of Victory MYA Pitt Events
+</header>
     <main class="main-content">
         <div class="board-grid">
             <div class="member" *ngFor="let member of members">
@@ -17,4 +10,3 @@
             </div>
         </div>
     </main>
-</div>

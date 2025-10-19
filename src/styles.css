@@ -6,11 +6,29 @@ body, html {
     width: 100%;
     height: 100%;
     z-index: -1;
+    overflow: hidden;
 }
 
 /*Main CSS */
 
 /* Default: 3440x1440 Optimization */
+.home-header {
+  width: 100%;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(90deg, #00f2fe, #4facfe);
+    transform: scale(1.05);
+  }
+}
+
 .grid-container {
   display: grid;
   grid-template-areas: 
@@ -23,16 +41,72 @@ body, html {
 .left-sidebar {
   grid-area: left-sidebar;
 }
+.left-sidebar nav ul {
+  list-style: none;       /* remove bullets */
+  padding: 0;
+  margin: 0;
+  display: flex;          /* make the list horizontal */
+  flex-direction: column; /* keep vertical if you want vertical sidebar */
+  gap: 10px;              /* optional spacing between links */
+}
+
+.left-sidebar nav ul li {
+  margin: 0;
+  padding: 0;
+}
+
+.left-sidebar nav ul li a {
+  text-decoration: none;  /* remove underline */
+  color: #333;            /* your link color */
+  display: block;         /* make full clickable area */
+  padding: 5px 10px;      /* optional spacing */
+}
+
+.left-sidebar nav ul li a:hover {
+  background-color: #ddd; /* highlight on hover */
+  border-radius: 4px;
+}
 
 .main-content {
   grid-area: main-content;
-  position: relative;
-  display: grid;
-  place-items: center;
   height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Container for the image */
+.eImage-container {
+  height: 100%;
   width: 100%;
-  overflow: hidden; 
-  z-index: 2;    
+  position: relative;
+}
+
+/* Image fills entire container */
+.eEvent-poster {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills container and crops if needed */
+  z-index: 10;
+}
+
+/* Optional overlay for text or slight dimming */
+.eImage-container::after {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2); /* optional dim overlay */
+  z-index: 2;
+}
+.full-calendar {
+  flex: 1; /* takes all available space */
+  width: 100%;
+  padding: 10px
 }
 
 nav {   
@@ -305,7 +379,7 @@ body, html {
 
 .eEvent-poster {
   width: 100%;
-  height: 1000px;
+  
   object-fit: contain;
   transition: opacity 0.5s ease-in-out;
   cursor: pointer;
@@ -320,7 +394,7 @@ body, html {
 .eImage-container {
   position: relative;
   width: 100%;
-  height: 500px; /* Adjust height as needed */
+  height: 500px; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -331,7 +405,7 @@ body, html {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2; /* Make sure the slideshow is on top */  
+  z-index: 2; 
 }
 
 /*Events CSS */

@@ -1,4 +1,4 @@
-<div class="grid-container">
+<!-- <div class="grid-container">
   <section class="left-sidebar">
     <nav>
       <ul>
@@ -17,7 +17,7 @@
         [class.active]="i === currentIndex"
         alt="Background image {{ i + 1 }}"
       />
-      <!-- <img [src]="images[currentIndex]" alt="Slideshow Image" /> -->
+
     </div>
     <div class="image-container">
       <img src="assets/images/tCross.png" alt="Transparent Image" class="transparent-image">
@@ -33,4 +33,40 @@
     </div> 
   </main>
 </div>
+ -->
+<header class="home-header" routerLink="/">
+  Our Lay of Victory MYA Pitt Events
+</header>
+<main class="home-page">
+  <div class="grid-container">
+    <button class="home-btn" routerLink="/about-us">
+      <img src="assets/images/CurrentMYA.JPG" alt="About Us" />
+      <span class="btn-text">About Us</span>
+    </button>
 
+    <button class="home-btn" routerLink="/events">
+      <img src="assets/images/festival.JPG" alt="Events" />
+      <span class="btn-text">Events</span>
+    </button>
+
+    <button class="home-btn" routerLink="/board">
+      <img src="assets/images/dinner.JPG" alt="Board" />
+      <span class="btn-text">Board</span>
+    </button>
+
+    <button class="home-btn" routerLink="/calendar">
+      <img src="assets/images/OLOV.jpg" alt="Calendar" />
+      <span class="btn-text">Calendar</span>
+    </button>
+
+    <!-- <button class="home-btn" routerLink="/other1">
+      <img src="assets/images/other.png" alt="Other 1" />
+      <span>Other 1</span>
+    </button>
+
+    <button class="home-btn" routerLink="/other2">
+      <img src="assets/images/other.png" alt="Other 2" />
+      <span>Other 2</span>
+    </button> -->
+  </div>
+</main>

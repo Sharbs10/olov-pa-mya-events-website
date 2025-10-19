@@ -22,7 +22,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   pImages: string[] = [
     'assets/images/Puttshack.JPG',
-    'assets/images/StSMass.JPG'
+    'assets/images/StSMass.JPG',
   ]
 
   pCurrentIndex: number = 0;
@@ -40,10 +40,14 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.ngZone.runOutsideAngular(() => {
       this.pIntervalId = setInterval(() => {
         this.ngZone.run(() => {
+          if (this.pImages.length === 0) {
+            console.warn("🔹 No images available for slideshow.");
+            return;
+          }
           this.pCurrentIndex = (this.pCurrentIndex + 1) % this.pImages.length;
           console.log("🔹 Changing Event slide to index:", this.pCurrentIndex);
         });
-      }, 8000);
+      }, 3000);
     });
   }
 

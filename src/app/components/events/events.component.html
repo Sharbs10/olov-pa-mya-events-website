@@ -1,28 +1,18 @@
-<div class="grid-container">
-    <section class="left-sidebar">
-        <nav>
-          <ul>
-            <li><a routerLink="/">Home</a></li>
-            <li><a routerLink="/events">Events</a></li>
-            <li><a routerLink="/calendar">Calendar</a></li>
-            <li><a routerLink="/board">Board</a></li>
-          </ul>
-        </nav>
-      </section>
-    <main class="main-content">
-        <div class="eImage-container">            
-            <div class="eSlideshow">
-              <img 
-              *ngIf="pImages.length > 0"
-              [src]="pImages[pCurrentIndex]"
-              alt="Event Poster"
-              class="eEvent-poster"
-              (mouseenter)="pausePSlideshow()"  
-              (mouseleave)="resumePSlideshow()" 
-            />
-            </div>
-        </div>
-    </main>
-</div>
-  
+<header class="home-header" routerLink="/">
+  Our Lay of Victory MYA Pitt Events
+</header>
 
+<main class="main-content">
+  <div class="eImage-container">
+    <div class="eSlideshow">
+      <img
+        *ngIf="pImages.length > 0"
+        [src]="pImages[pCurrentIndex]"
+        alt="Event Poster"
+        class="eEvent-poster"
+        (mouseenter)="pausePSlideshow()"
+        (mouseleave)="resumePSlideshow()"
+      />
+    </div>
+  </div>
+</main>
