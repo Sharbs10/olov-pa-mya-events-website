@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject, NgZone } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,63 +14,67 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './events.component.css'
 })
 export class EventsComponent implements OnInit, OnDestroy {
-  
-  constructor(
-    private router: Router,
-    private ngZone: NgZone
-  ) {}
 
+
+  pCurrentIndex = 0;
+  pIntervalId: any = null;
+  isDesktop = true;
   pImages: string[] = [
     'assets/images/Puttshack.JPG',
     'assets/images/StSMass.JPG',
   ]
 
-  pCurrentIndex: number = 0;
-  pIntervalId: any;
+  constructor(
+    private router: Router,
+    private ngZone: NgZone, @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit() {
-    console.log("🔹 HomeComponent initialized");    
-    this.startPSlideshow();
-  }  
-  
-  startPSlideshow() {
-    console.log("🔹 Event Slideshow started");
-
-    // Run outside Angular to prevent hydration issues
-    this.ngZone.runOutsideAngular(() => {
-      this.pIntervalId = setInterval(() => {
-        this.ngZone.run(() => {
-          if (this.pImages.length === 0) {
-            console.warn("🔹 No images available for slideshow.");
-            return;
-          }
-          this.pCurrentIndex = (this.pCurrentIndex + 1) % this.pImages.length;
-          console.log("🔹 Changing Event slide to index:", this.pCurrentIndex);
-        });
-      }, 3000);
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      // Only run this code in the browser
+      this.checkScreenSize();
+      window.addEventListener('resize', this.checkScreenSize.bind(this));
+      this.startPSlideshow();
+    }
   }
 
-  // 🔹 Stop slideshow on hover
-  pausePSlideshow() {
-    console.log("🔹 Slideshow paused");
+ checkScreenSize() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isDesktop = window.innerWidth > 768;
+    }
+  }
+
+   pausePSlideshow() {
+    if (!isPlatformBrowser(this.platformId) || !this.isDesktop) return;
+
     if (this.pIntervalId) {
       clearInterval(this.pIntervalId);
       this.pIntervalId = null;
     }
   }
 
-  // 🔹 Resume slideshow on hover out
   resumePSlideshow() {
-    console.log("🔹 Slideshow resumed");
+    if (!isPlatformBrowser(this.platformId) || !this.isDesktop) return;
+
     if (!this.pIntervalId) {
       this.startPSlideshow();
     }
   }
 
-  ngOnDestroy() {  
-    if (this.pIntervalId) {
-      clearInterval(this.pIntervalId);
+  startPSlideshow() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    if (!this.pIntervalId && this.pImages.length > 0) {
+      this.pIntervalId = setInterval(() => {
+        this.pCurrentIndex = (this.pCurrentIndex + 1) % this.pImages.length;
+      }, 3000); 
+    }
+  }
+
+  ngOnDestroy() {
+    if (isPlatformBrowser(this.platformId)) {
+      if (this.pIntervalId) clearInterval(this.pIntervalId);
+      window.removeEventListener('resize', this.checkScreenSize.bind(this));
     }
   }
 }

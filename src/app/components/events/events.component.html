@@ -1,18 +1,14 @@
 <header class="home-header" routerLink="/">
-  Our Lay of Victory MYA Pitt Events
+  Our Lady of Victory MYA Pitt Events
 </header>
 
-<main class="main-content">
-  <div class="eImage-container">
-    <div class="eSlideshow">
-      <img
-        *ngIf="pImages.length > 0"
-        [src]="pImages[pCurrentIndex]"
-        alt="Event Poster"
-        class="eEvent-poster"
-        (mouseenter)="pausePSlideshow()"
-        (mouseleave)="resumePSlideshow()"
-      />
-    </div>
-  </div>
+<main class="image-main-content">
+  <img
+    *ngIf="pImages.length > 0"
+    [src]="pImages[pCurrentIndex]"
+    alt="Event Poster"
+    class="eEvent-poster"
+    (mouseenter)="pausePSlideshow()"
+    (mouseleave)="resumePSlideshow()"
+  />
 </main>

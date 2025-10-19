@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { GoogleCalendarService } from '../../services/google-calendar.service';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { Component, OnInit, ViewChild, Inject, PLATFORM_ID, AfterViewInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { GoogleCalendarService } from '../../services/google-calendar.service';
-import { FullCalendarModule } from '@fullcalendar/angular';
+import listPlugin from '@fullcalendar/list';
+import { CalendarOptions } from '@fullcalendar/core';
 
 @Component({
   selector: 'app-calendar',
@@ -15,18 +19,63 @@ import { FullCalendarModule } from '@fullcalendar/angular';
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, AfterViewInit {
+  @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
+
   events: any[] = [];
-
-  calendarOptions: any = {
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+  calendarOptions: CalendarOptions = {
+    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
     initialView: 'dayGridMonth',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
     height: '100%',
-    events: [], // will be set dynamically
-    eventClick: this.handleEventClick.bind(this),
+    events: [],
+    eventClick: this.handleEventClick.bind(this)
   };
+  
 
-  constructor(private gCal: GoogleCalendarService) {}
+  // calendarOptions: any = {
+  //   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+  //   initialView: 'dayGridMonth',
+  //   headerToolbar: {
+  //     left: 'prev,next today',
+  //     center: 'title',
+  //     right: 'dayGridMonth,timeGridWeek,timeGridDay'
+  //   },
+  //   // 👇 Responsive behavior
+  //   windowResize: (view: any) => {
+  //   const width = window.innerWidth;
+  //   if (width < 768) {
+  //     this.calendarOptions = {
+  //       ...this.calendarOptions,
+  //       headerToolbar: {
+  //         left: 'prev,next',
+  //         center: 'title',
+  //         right: ''
+  //       },
+  //       initialView: 'listWeek'
+  //     };
+  //   } else {
+  //     this.calendarOptions = {
+  //       ...this.calendarOptions,
+  //       headerToolbar: {
+  //         left: 'prev,next today',
+  //         center: 'title',
+  //         right: 'dayGridMonth,timeGridWeek,timeGridDay'
+  //       },
+  //       initialView: 'dayGridMonth'
+  //     };
+  //   }
+  // },
+  //   height: '100%',
+  //   events: [], // will be set dynamically
+  //   eventClick: this.handleEventClick.bind(this),
+  // };
+
+  constructor(private gCal: GoogleCalendarService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   async ngOnInit() {
     try {
@@ -38,6 +87,40 @@ export class CalendarComponent implements OnInit {
       console.error('❌ GAPI init error:', err);
     }
   }
+
+    ngAfterViewInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      // Set initial view based on screen width
+      this.adjustCalendarForScreen(window.innerWidth);
+
+      // Listen to window resize
+      window.addEventListener('resize', () => {
+        this.adjustCalendarForScreen(window.innerWidth);
+      });
+    }
+  }
+
+ adjustCalendarForScreen(width: number) {
+    if (!this.calendarComponent) return; // Safety check
+
+    const calendarApi = this.calendarComponent.getApi();
+    if (!calendarApi) return;
+
+    if (width < 768) {
+      // Mobile view
+      calendarApi.changeView('listWeek');
+      calendarApi.setOption('headerToolbar', { left: 'prev,next', center: 'title', right: '' });
+    } else {
+      // Desktop view
+      calendarApi.changeView('dayGridMonth');
+      calendarApi.setOption('headerToolbar', {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      });
+    }
+  }
+ 
 
   // async signIn() {
   //   try {
@@ -81,6 +164,7 @@ export class CalendarComponent implements OnInit {
     alert(
       `Event: ${title}\nDescription: ${extendedProps.description || 'N/A'}\nLocation: ${extendedProps.location || 'N/A'}`
     );
+    console.log('Event clicked:', clickInfo.event);
   }
 
   // currentMonth: number = 1; // Start with January (0 = Jan, 1 = Feb, etc.)
