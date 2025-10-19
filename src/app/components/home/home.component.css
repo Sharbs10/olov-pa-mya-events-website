@@ -57,17 +57,26 @@
 
 @media (max-width: 768px) {
   .home-grid-container {
+    display: grid;
     grid-template-columns: 1fr;  /* single column */
-    grid-template-rows: none;    /* remove fixed rows */
-    gap: 100px !important;                   /* keep spacing */
+    /* Let rows size automatically based on content */
+    grid-auto-rows: auto;
+    gap: 50px;                   /* spacing between rows */
+    padding: 20px;               /* optional: padding around container */
   }
 
   .home-btn {
-    height: auto;                /* allow height to scale naturally */
-    aspect-ratio: 16/9;          /* optional: maintain a nice ratio */
+    width: 100%;                 /* full width of container */
+    aspect-ratio: 16/9;          /* maintain nice ratio */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .home-btn img {
-    height: auto;                /* scale image correctly */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;           /* scale and crop nicely */
   }
 }
