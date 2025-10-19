@@ -11,7 +11,7 @@
     "process": "node ./tools/copy-files.mjs",
     "deploy": "npm run build && wrangler pages deploy dist/cloudflare"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "^19.1.0",
     "@angular/common": "^19.1.0",
