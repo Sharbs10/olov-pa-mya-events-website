@@ -59,7 +59,7 @@
   .home-grid-container {
     grid-template-columns: 1fr;  /* single column */
     grid-template-rows: none;    /* remove fixed rows */
-    gap: 50px !important;                   /* keep spacing */
+    gap: 100px !important;                   /* keep spacing */
   }
 
   .home-btn {
