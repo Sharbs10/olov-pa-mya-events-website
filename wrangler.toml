@@ -8,3 +8,5 @@ head_sampling_rate = 1
 
 [site]
 bucket = "./dist/cloudflare"
+
+pages_build_output_dir = "./dist/cloudflare"

@@ -17,9 +17,7 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "types": [
-        "@cloudflare/workers-types/2023-07-01"
-    ]
+    "types": ["@cloudflare/workers-types"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
