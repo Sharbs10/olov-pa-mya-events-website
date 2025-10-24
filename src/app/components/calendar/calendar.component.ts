@@ -27,53 +27,23 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
     initialView: 'dayGridMonth',
     headerToolbar: {
-      left: 'prev,next today',
+      left: 'prev,next today downloadCalendar',
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
     height: '100%',
+    customButtons: {
+      // 👇 define behavior of the custom button
+      downloadCalendar: {
+        text: '📥 Download',
+        click: this.downloadCalendarEvents.bind(this)
+      }
+    },
     events: [],
     eventClick: this.handleEventClick.bind(this)
   };
-  
 
-  // calendarOptions: any = {
-  //   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-  //   initialView: 'dayGridMonth',
-  //   headerToolbar: {
-  //     left: 'prev,next today',
-  //     center: 'title',
-  //     right: 'dayGridMonth,timeGridWeek,timeGridDay'
-  //   },
-  //   // 👇 Responsive behavior
-  //   windowResize: (view: any) => {
-  //   const width = window.innerWidth;
-  //   if (width < 768) {
-  //     this.calendarOptions = {
-  //       ...this.calendarOptions,
-  //       headerToolbar: {
-  //         left: 'prev,next',
-  //         center: 'title',
-  //         right: ''
-  //       },
-  //       initialView: 'listWeek'
-  //     };
-  //   } else {
-  //     this.calendarOptions = {
-  //       ...this.calendarOptions,
-  //       headerToolbar: {
-  //         left: 'prev,next today',
-  //         center: 'title',
-  //         right: 'dayGridMonth,timeGridWeek,timeGridDay'
-  //       },
-  //       initialView: 'dayGridMonth'
-  //     };
-  //   }
-  // },
-  //   height: '100%',
-  //   events: [], // will be set dynamically
-  //   eventClick: this.handleEventClick.bind(this),
-  // };
+ 
 
   constructor(private gCal: GoogleCalendarService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -100,6 +70,68 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     }
   }
 
+   async downloadCalendarEvents() {
+    try {
+      const events = await this.gCal.listEvents();
+
+      if (!events || events.length === 0) {
+        alert('No events found for this month.');
+        return;
+      }
+
+      const icsContent = this.generateICS(events);
+      this.triggerDownload(icsContent);
+    } catch (err) {
+      console.error('❌ Error fetching or downloading events:', err);
+      alert('Failed to download calendar events.');
+    }
+  }
+
+  private generateICS(events: any[]): string {
+    const vevents = events.map(event => `
+BEGIN:VEVENT
+UID:${Date.now()}-${Math.random().toString(36).substring(2)}@myapp.com
+DTSTAMP:${this.formatDate(new Date())}
+DTSTART:${this.formatDate(new Date(event.start))}
+DTEND:${this.formatDate(new Date(event.end))}
+SUMMARY:${this.escapeText(event.title || '')}
+DESCRIPTION:${this.escapeText(event.description || '')}
+LOCATION:${this.escapeText(event.location || '')}
+END:VEVENT
+    `).join('\n');
+
+    return `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//YourAppName//EN
+${vevents}
+END:VCALENDAR
+    `.trim();
+  }
+
+  private triggerDownload(icsContent: string) {
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'events.ics';
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  private formatDate(date: Date): string {
+    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  }
+
+  private escapeText(text: string): string {
+    return text
+      .replace(/,/g, '\\,')
+      .replace(/;/g, '\\;')
+      .replace(/\n/g, '\\n');
+  }
+
  adjustCalendarForScreen(width: number) {
     if (!this.calendarComponent) return; // Safety check
 
@@ -109,12 +141,12 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     if (width < 768) {
       // Mobile view
       calendarApi.changeView('listWeek');
-      calendarApi.setOption('headerToolbar', { left: 'prev,next', center: 'title', right: '' });
+      calendarApi.setOption('headerToolbar', { left: 'prev,next', center: 'title', right: 'downloadCalendar' });
     } else {
       // Desktop view
       calendarApi.changeView('dayGridMonth');
       calendarApi.setOption('headerToolbar', {
-        left: 'prev,next today',
+        left: 'prev,next today downloadCalendar',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       });

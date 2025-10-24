@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 declare const gapi: any;
 
 @Injectable({ providedIn: 'root' })
 export class GoogleCalendarService {
-  private API_KEY = 'AIzaSyACkfORyuhXfORJPyuYKVRDyr58GkS6sVg';
+  private API_KEY = environment.firebase.apiKey;
   private DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
   private initialized = false;
 
   // Public calendar ID
-  private CALENDAR_ID = '2a252d0e94b39661b957cfb51615edce87040ddfd21ba562360d6fac386dad79@group.calendar.google.com';
+  private CALENDAR_ID = environment.calendarId;
 
   // ✅ Step 1: Dynamically load GAPI
   private loadGapi(): Promise<void> {
