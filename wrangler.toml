@@ -1,12 +1,4 @@
 name = "olov-pa-mya-events-website"
-account_id = "b8c22d811fac00133d94cfcc66656c20"
 compatibility_date = "2025-10-24"
 
-[observability]
-enabled = true
-head_sampling_rate = 1
-
-[site]
-bucket = "./dist/cloudflare"
-
-pages_build_output_dir = "./dist/cloudflare"
+pages_build_output_dir = "dist/cloudflare"
