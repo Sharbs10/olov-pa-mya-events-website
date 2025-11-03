@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "npm run build && wrangler pages dev dist/cloudflare --compatibility-date=2025-01-29",
-    "build": "ng build && npm run process",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:olov-pa-mya-events-website": "node dist/olov-pa-mya-events-website/server/server.mjs",

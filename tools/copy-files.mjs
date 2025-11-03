@@ -1,15 +1,15 @@
-// Copy the files over so that they can be uploaded by the pages publish command.
+// tools/copy-files.mjs
 import fs from "node:fs";
-import { join, resolve } from "node:path";
+import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(fileURLToPath(import.meta.url), "../../");
-const client = resolve(root, "dist/browser");
-const ssr = resolve(root, "dist/server");
-const cloudflare = resolve(root, "dist/cloudflare");
-const worker = resolve(cloudflare, "_worker.js");
+const dist = resolve(root, "dist/cloudflare");
 
-fs.cpSync(client, cloudflare, { recursive: true });
-fs.cpSync(ssr, worker, { recursive: true });
+// Verify folder exists before copying
+if (!fs.existsSync(dist)) {
+  console.error(`❌ Build output not found at: ${dist}`);
+  process.exit(1);
+}
 
-fs.renameSync(join(worker, "server.mjs"), join(worker, "index.js"));
+console.log(`✅ Build found at: ${dist}. Ready for deployment.`);
