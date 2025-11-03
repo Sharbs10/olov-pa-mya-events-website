@@ -9,7 +9,7 @@ export class GoogleCalendarService {
   private initialized = false;
   private CALENDAR_ID = environment.calendarId;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
   // Load GAPI script only in browser
   private async loadGapi(): Promise<any> {
@@ -60,23 +60,34 @@ export class GoogleCalendarService {
     const gapi = (window as any).gapi;
     if (!gapi) return [];
 
-    const now = new Date();
-    const timeMin = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-    const timeMax = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString();
+    // Include all past, present, and future events
+    const timeMin = new Date('1970-01-01T00:00:00Z').toISOString();
+    // Optional: remove timeMax to get all future events
+    // const timeMax = new Date('2100-01-01T00:00:00Z').toISOString();
 
-    const response = await gapi.client.calendar.events.list({
-      calendarId: this.CALENDAR_ID,
-      timeMin,
-      timeMax,
-      showDeleted: false,
-      singleEvents: true,
-      orderBy: 'startTime',
-      maxResults: 50,
-    });
+    let allItems: any[] = [];
+    let nextPageToken: string | undefined = undefined;
 
-    const items = response.result.items || [];
-    console.log(`🟢 Loaded ${items.length} events:`, items);
-    return items.map((event: any) => ({
+    do {
+      const response: any = await gapi.client.calendar.events.list({
+        calendarId: this.CALENDAR_ID,
+        timeMin,
+        showDeleted: false,
+        singleEvents: true,
+        orderBy: 'startTime',
+        maxResults: 2500, // max allowed by Google Calendar API
+        pageToken: nextPageToken,
+      });
+
+      const items = response.result.items || [];
+      allItems = allItems.concat(items);
+
+      nextPageToken = response.result.nextPageToken;
+    } while (nextPageToken);
+
+    console.log(`🟢 Loaded ${allItems.length} events:`, allItems);
+
+    return allItems.map((event: any) => ({
       title: event.summary,
       start: event.start?.dateTime || event.start?.date,
       end: event.end?.dateTime || event.end?.date,
@@ -84,4 +95,5 @@ export class GoogleCalendarService {
       location: event.location || '',
     }));
   }
+
 }
