@@ -45,7 +45,7 @@ export class GoogleCalendarService {
           console.log('🟢 GAPI client initialized');
           resolve();
         } catch (err) {
-          console.error('❌ GAPI init failed:', err);
+          console.error('❌ GAPI init failed lol:', err);
           reject(err);
         }
       });
