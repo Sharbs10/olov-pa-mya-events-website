@@ -16,25 +16,20 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/cloudflare",
+            "outputPath": "dist/olov-pa-mya-events-website",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public",
-                "output": "/"
-              },
-              "src/_routes.json"
+              "src/assets",
+              "src/favicon.ico"
             ],
             "styles": [
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": [],
-            "baseHref": "/"            
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -94,11 +89,8 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public",
-                "output": "/"
-              }
+              "src/assets",
+              "src/favicon.ico"
             ],
             "styles": [
               "src/styles.css",
