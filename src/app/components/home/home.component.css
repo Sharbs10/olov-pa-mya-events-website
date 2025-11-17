@@ -12,7 +12,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr; 
   grid-template-rows: repeat(2, 1fr); 
-  gap: 20px;
+  /* gap: 20px; */
   width: 90%;
   height: 90%;
 }
@@ -25,6 +25,7 @@
   padding: 0;
   cursor: pointer;
   overflow: hidden;
+   background: transparent;
 }
 
 .home-btn img {
@@ -34,6 +35,8 @@
   display: block;
   opacity: 0.6; 
   z-index: 1;  
+  transform: scale(0.80);
+  background: transparent;
 }
 
 .home-btn .btn-text {
@@ -60,15 +63,15 @@
 
   .home-page {
     align-items: flex-start;      /* always start below header */
-    padding-top: 20px;            /* space below header */
-    min-height: auto;             /* allow height to grow with content */
+    padding-top: 50px;            /* space below header */
+    
   }
 
   .home-grid-container {
     grid-template-columns: 1fr;    /* stack items */
     grid-auto-rows: auto;          /* rows size naturally */
-    gap: 30px;                     /* spacing between buttons */
-    padding: 10px;                 /* padding around container */
+
+   
     height: auto;                  /* remove fixed height */
   }
 

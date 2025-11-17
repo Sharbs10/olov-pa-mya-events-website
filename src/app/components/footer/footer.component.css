@@ -1,0 +1,34 @@
+.icon-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px 0;
+  background: transparent;      /* no background so it blends */
+  margin-top: auto;             /* prevents overlap */
+  border-top: 2px solid #000;   /* <-- added top border (black, 2px thick) */
+}
+
+.footer-icon i {
+  font-size: 2rem;
+  color: black;               /* light gray */
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer-icon:hover i {
+  transform: scale(1.15);
+  color: black;               /* slightly darker on hover */
+  cursor: pointer;
+}
+
+/* 📱 mobile */
+@media (max-width: 768px) {
+  .icon-footer {
+    gap: 40px;
+    padding-bottom: 30px;
+  }
+
+  .footer-icon i {
+    font-size: 2.2rem;          /* bigger icons for mobile */
+  }
+}

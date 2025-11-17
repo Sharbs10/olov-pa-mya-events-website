@@ -3,10 +3,21 @@ import { isPlatformBrowser } from '@angular/common';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core';
 import { GoogleCalendarService } from '../../services/google-calendar.service';
+import { FooterComponent } from '../footer/footer.component';
+
+import { CommonModule } from '@angular/common';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { NgModule } from '@angular/core';
+
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-calendar',
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FullCalendarModule, FooterComponent, RouterModule],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })

@@ -1,39 +1,3 @@
-<!-- <div class="grid-container">
-  <section class="left-sidebar">
-    <nav>
-      <ul>
-        <li><a routerLink="/">Home</a></li>
-        <li><a routerLink="/events">Events</a></li>
-        <li><a routerLink="/calendar">Calendar</a></li>
-        <li><a routerLink="/board">Board</a></li>
-      </ul>
-    </nav>
-  </section>
-  <main class="main-content">
-    <div class="background-slideshow" *ngIf="images.length > 0">
-      <img 
-        *ngFor="let image of images; let i = index"
-        [src]="image"
-        [class.active]="i === currentIndex"
-        alt="Background image {{ i + 1 }}"
-      />
-
-    </div>
-    <div class="image-container">
-      <img src="assets/images/tCross.png" alt="Transparent Image" class="transparent-image">
-      <div class="slideshow">
-        <img 
-        *ngIf="pImages.length > 0"
-        [src]="pImages[pCurrentIndex]"
-        alt="Event Poster"
-        class="event-poster"
-        (click)="goToEvents()"
-      />
-      </div>
-    </div> 
-  </main>
-</div>
- -->
 <header class="home-header" routerLink="/">
   Our Lady of Victory MYA Pitt Events
 </header>
@@ -58,15 +22,6 @@
       <img src="assets/images/OLOV.jpg" alt="Calendar" />
       <span class="btn-text">Calendar</span>
     </button>
-
-    <!-- <button class="home-btn" routerLink="/other1">
-      <img src="assets/images/other.png" alt="Other 1" />
-      <span>Other 1</span>
-    </button>
-
-    <button class="home-btn" routerLink="/other2">
-      <img src="assets/images/other.png" alt="Other 2" />
-      <span>Other 2</span>
-    </button> -->
   </div>
 </main>
+<app-footer></app-footer>
