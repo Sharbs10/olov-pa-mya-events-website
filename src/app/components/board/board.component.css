@@ -1,0 +1,55 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+
+}
+
+.home-header {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+
+}
+
+.main-content {
+  flex: 1;
+  height: calc(100vh - 60px - 80px);  /* minus header + footer heights */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #a6d0fa, #ffffff);
+  padding: 0;
+         
+}  
+
+app-footer {
+  height: 80px;
+  display: block;
+}
+
+@media (min-width: 769px) {
+  html, body {
+    overflow-y: auto;   /* allow scrolling if needed */
+    overflow-x: hidden; /* prevent sideways scroll */
+  }
+}
+
+/* 📱 Mobile adjustments */
+@media (max-width: 768px) {
+
+  html, body {
+  overflow: scroll;    
+}
+
+.board-grid {
+  
+    gap: 20px;
+    padding: 20px;
+    justify-items: center;
+    align-items: center;
+    overflow: auto;
+}
+}

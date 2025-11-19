@@ -21,6 +21,13 @@
   cursor: pointer;
 }
 
+@media (min-width: 769px) {
+  html, body {
+    overflow-y: auto;   /* allow scrolling if needed */
+    overflow-x: hidden; /* prevent sideways scroll */
+  }
+}
+
 /* 📱 mobile */
 @media (max-width: 768px) {
   .icon-footer {

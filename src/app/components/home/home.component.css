@@ -1,11 +1,19 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+ 
+}
+
 .home-page {
-  width: 100vw;
-  height: 100vh;          /* use min-height instead of height */
+  flex: 1;
+  height: calc(100vh - 60px - 80px);  /* minus header + footer heights */
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(to bottom, #a6d0fa, #ffffff);
-  padding: 3%;
+  padding: 0;
+  overflow: hidden;                  
 }
 
 .home-grid-container {
@@ -15,6 +23,21 @@
   /* gap: 20px; */
   width: 90%;
   height: 90%;
+  overflow: hidden !important;
+}
+
+.home-header {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+  overflow: hidden;
+}
+
+.home-header:hover, body:hover {
+
+  overflow: hidden;
 }
 
 .home-btn {
@@ -25,7 +48,7 @@
   padding: 0;
   cursor: pointer;
   overflow: hidden;
-   background: transparent;
+  background: transparent;   
 }
 
 .home-btn img {
@@ -58,13 +81,30 @@
   opacity: 0.8;
 }
 
+app-footer {
+  height: 80px;
+  display: block;
+}
+
+@media (min-width: 769px) {
+  html, body {
+    overflow-y: auto;   /* allow scrolling if needed */
+    overflow-x: hidden; /* prevent sideways scroll */
+  }
+}
+
 /* 📱 Mobile adjustments */
 @media (max-width: 768px) {
 
+  html, body {
+  overflow: auto;    
+}
+
   .home-page {
     align-items: flex-start;      /* always start below header */
-    padding-top: 50px;            /* space below header */
-    
+    width: 100%;
+    padding-top: 6%;
+    overflow: auto;    
   }
 
   .home-grid-container {
@@ -73,11 +113,13 @@
 
    
     height: auto;                  /* remove fixed height */
+    overflow: auto;    
   }
 
   .home-btn {
     height: auto;                  /* let height scale naturally */
     aspect-ratio: 16/9;            /* maintain rectangle ratio */
+
   }
 
   .home-btn img {
