@@ -1,27 +1,14 @@
-<header class="home-header" routerLink="/">
-  Our Lady of Victory MYA Pitt Events
-</header>
-<main class="home-page">
-  <div class="home-grid-container">
-    <button class="home-btn" routerLink="/about-us">
-      <img src="assets/images/CurrentMYA.JPG" alt="About Us" />
-      <span class="btn-text">About Us</span>
-    </button>
-
-    <button class="home-btn" routerLink="/events">
-      <img src="assets/images/festival.JPG" alt="Events" />
-      <span class="btn-text">Events</span>
-    </button>
-
-    <button class="home-btn" routerLink="/board">
-      <img src="assets/images/dinner.JPG" alt="Board" />
-      <span class="btn-text">Board</span>
-    </button>
-
-    <button class="home-btn" routerLink="/calendar">
-      <img src="assets/images/OLOV.jpg" alt="Calendar" />
-      <span class="btn-text">Calendar</span>
-    </button>
-  </div>
+<app-header></app-header>
+<main class="menu-page community-menu-page">
+  <header class="menu-intro">
+    <h1 class="menu-heading">MYA</h1>
+    <p class="menu-description">Maronite Young Adults</p>
+  </header>
+  <nav class="menu-grid" aria-label="MYA sections">
+    <a class="menu-card" routerLink="/mya/about-us"><span class="menu-card-icon" aria-hidden="true"><i class="fa-solid fa-circle-info"></i></span><span class="menu-card-copy"><span class="menu-card-title">About Us</span><span class="menu-card-description">Get to know our community.</span></span><i class="menu-card-arrow fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    <a class="menu-card" routerLink="/mya/events"><span class="menu-card-icon" aria-hidden="true"><i class="fa-solid fa-calendar-days"></i></span><span class="menu-card-copy"><span class="menu-card-title">Events</span><span class="menu-card-description">See what's happening in the community.</span></span><i class="menu-card-arrow fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    <a class="menu-card" routerLink="/mya/calendar"><span class="menu-card-icon" aria-hidden="true"><i class="fa-solid fa-calendar-week"></i></span><span class="menu-card-copy"><span class="menu-card-title">Calendar</span><span class="menu-card-description">Browse upcoming dates and gatherings.</span></span><i class="menu-card-arrow fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    <a class="menu-card" routerLink="/mya/resources"><span class="menu-card-icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span><span class="menu-card-copy"><span class="menu-card-title">Resources</span><span class="menu-card-description">Find helpful links and materials.</span></span><i class="menu-card-arrow fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+  </nav>
 </main>
 <app-footer></app-footer>

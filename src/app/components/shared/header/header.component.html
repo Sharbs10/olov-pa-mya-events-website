@@ -1,0 +1,20 @@
+<header class="site-header">
+  @if (showBack) {
+    <button
+      class="back-button"
+      type="button"
+      (click)="goBack()"
+      aria-label="Go back to the previous page"
+    >
+      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+    </button>
+  }
+  <a class="site-brand" routerLink="/" aria-label="Our Lady of Victory home">
+    <span class="site-brand-name">Our Lady of Victory</span>
+    <span class="site-brand-subtitle">Pittsburgh, Pennsylvania</span>
+  </a>
+  <a class="home-button" routerLink="/" aria-label="Go to the community hub">
+    <i class="fa-solid fa-house" aria-hidden="true"></i>
+    <span>Community hub</span>
+  </a>
+</header>

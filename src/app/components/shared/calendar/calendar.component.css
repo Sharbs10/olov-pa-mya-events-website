@@ -1,38 +1,366 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;      /* 🚫 removes all scrolling */
+.calendar-page {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 0;
+  align-items: stretch;
+  justify-content: center;
+  padding: clamp(0.55rem, 1.5vh, 1rem) clamp(0.65rem, 2vw, 1.5rem);
+  background:
+    radial-gradient(ellipse at 10% 5%, rgba(70, 151, 225, 0.14), transparent 36%),
+    linear-gradient(145deg, #f1f8ff 0%, #dceeff 52%, #f9fcff 100%);
 }
 
-.home-header {
-  height: 60px;
+.calendar-panel {
   display: flex;
-  justify-content: center;
+  width: min(100%, 92rem);
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  padding: clamp(0.75rem, 1.6vw, 1.4rem);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 1.15rem;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 16px 40px rgba(21, 53, 91, 0.12);
+}
+
+.calendar-heading {
+  display: flex;
+  flex: 0 0 auto;
   align-items: center;
-  font-size: 1.8rem;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #e2ebf3;
+}
+
+.calendar-download {
+  display: inline-flex;
+  min-height: 2.4rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid #d2e1ee;
+  border-radius: 0.6rem;
+  background: #fff;
+  color: #24567f;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.calendar-download:hover,
+.calendar-download:focus-visible {
+  border-color: #28639b;
+  background: #28639b;
+  color: #fff;
+}
+
+.calendar-download:focus-visible {
+  outline: 3px solid rgba(40, 99, 155, 0.3);
+  outline-offset: 2px;
+}
+
+.calendar-eyebrow {
+  margin: 0 0 0.2rem;
+  color: #28639b;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.calendar-heading h1 {
+  margin: 0;
+  color: #15355b;
+  font-size: clamp(1.2rem, 2.7vh, 1.8rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.calendar-heading > div > p:last-child {
+  margin: 0.2rem 0 0;
+  color: #667c91;
+  font-size: 0.82rem;
+}
+
+.full-calendar {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex: 1 1 0;
+  flex-direction: column;
+  padding-top: 0.8rem;
+  --fc-border-color: #e0e9f1;
+  --fc-page-bg-color: #fff;
+  --fc-neutral-bg-color: #f4f8fc;
+  --fc-today-bg-color: rgba(76, 154, 224, 0.1);
+  --fc-small-font-size: 0.78rem;
+}
+
+:host ::ng-deep .full-calendar.fc {
+  height: 100%;
+  min-height: 0;
+  flex: 1 1 0;
+  color: #29445f;
+  font-family: inherit;
+}
+
+:host ::ng-deep .full-calendar .fc-header-toolbar {
+  display: flex;
+  min-height: 2.5rem;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 0.65rem !important;
+}
+
+:host ::ng-deep .full-calendar .fc-toolbar-title {
+  color: #17324f;
+  font-size: clamp(1rem, 2.2vh, 1.35rem);
+  font-weight: 750;
+}
+
+:host ::ng-deep .full-calendar .fc-button-primary {
+  border-color: #d2e1ee;
+  border-radius: 0.55rem;
+  background: #fff;
+  color: #24567f;
+  font-size: 0.78rem;
+  font-weight: 650;
+  box-shadow: none;
+}
+
+:host ::ng-deep .full-calendar .fc-button-primary:hover,
+:host ::ng-deep .full-calendar .fc-button-primary:focus {
+  border-color: #28639b;
+  background: #28639b;
+  color: #fff;
+  box-shadow: none;
+}
+
+:host ::ng-deep .full-calendar .fc-button-primary:disabled {
+  border-color: #d2e1ee;
+  background: #e7eef5;
+  color: #8096aa;
+}
+
+:host ::ng-deep .full-calendar .fc-scrollgrid {
+  border-radius: 0.55rem;
   overflow: hidden;
 }
 
-.main-content {
-  flex: 1;
-  height: calc(100vh - 60px - 80px);  /* minus header + footer heights */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(to bottom, #a6d0fa, #ffffff);
-  padding: 0;
-  overflow: hidden;           
-}  
-
-app-footer {
-  height: 80px;
-  display: block;
+:host ::ng-deep .full-calendar .fc-col-header-cell {
+  background: #f4f8fc;
+  color: #526b83;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-@media (min-width: 769px) {
-  html, body {
-    overflow-y: auto;   /* allow scrolling if needed */
-    overflow-x: hidden; /* prevent sideways scroll */
+:host ::ng-deep .full-calendar .fc-col-header-cell-cushion {
+  color: #526b83;
+  text-decoration: none;
+}
+
+:host ::ng-deep .full-calendar .fc-daygrid-day-number {
+  padding: 0.35rem 0.45rem;
+  color: #29445f;
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+
+:host ::ng-deep .full-calendar .fc-day-other .fc-daygrid-day-number {
+  color: #a3b2c0;
+}
+
+:host ::ng-deep .full-calendar .fc-event {
+  border: 0;
+  border-radius: 0.35rem;
+  padding: 0.12rem 0.25rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+:host ::ng-deep .full-calendar .fc-view-harness {
+  min-height: 0;
+  flex: 1 1 auto;
+  height: auto !important;
+}
+
+.event-dialog-backdrop {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(10, 30, 50, 0.42);
+  backdrop-filter: blur(3px);
+}
+
+.event-dialog {
+  position: relative;
+  width: min(100%, 34rem);
+  max-height: 90%;
+  overflow: hidden;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 1.1rem;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(10, 30, 50, 0.28);
+}
+
+.event-dialog h2 {
+  margin: 0 2rem 1rem 0;
+  color: #17324f;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  line-height: 1.2;
+}
+
+.event-dialog-close {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  display: grid;
+  width: 2.4rem;
+  height: 2.4rem;
+  place-items: center;
+  border: 1px solid #dce8f2;
+  border-radius: 50%;
+  background: #f4f8fc;
+  color: #29445f;
+  cursor: pointer;
+}
+
+.event-dialog-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0.6rem 0;
+  color: #526b83;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.event-dialog-detail i {
+  margin-top: 0.15rem;
+  color: #28639b;
+}
+
+.event-dialog-description {
+  margin: 1rem 0 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid #e2ebf3;
+  color: #526b83;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 620px) {
+  .calendar-page {
+    padding: 0.4rem;
+  }
+
+  .calendar-panel {
+    padding: 0.55rem;
+    border-radius: 0.8rem;
+  }
+
+  .calendar-heading {
+    padding-bottom: 0.45rem;
+  }
+
+  .calendar-download {
+    min-height: 2rem;
+    gap: 0.35rem;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  .calendar-heading > div > p:last-child {
+    display: none;
+  }
+
+  .calendar-eyebrow {
+    font-size: 0.55rem;
+  }
+
+  .calendar-heading h1 {
+    font-size: 1.1rem;
+  }
+
+  .full-calendar {
+    padding-top: 0.4rem;
+    --fc-small-font-size: 0.68rem;
+  }
+
+  :host ::ng-deep .full-calendar .fc-header-toolbar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 0.25rem;
+    margin-bottom: 0.4rem !important;
+  }
+
+  :host ::ng-deep .full-calendar .fc-toolbar-chunk {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  :host ::ng-deep .full-calendar .fc-toolbar-chunk:nth-child(2) {
+    justify-content: center;
+  }
+
+  :host ::ng-deep .full-calendar .fc-toolbar-chunk:nth-child(3) {
+    grid-column: 1 / -1;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  :host ::ng-deep .full-calendar .fc-toolbar-title {
+    font-size: 0.88rem;
+    text-align: center;
+  }
+
+  :host ::ng-deep .full-calendar .fc-button-primary {
+    padding: 0.25rem 0.35rem;
+    font-size: 0.65rem;
+  }
+
+  :host ::ng-deep .full-calendar .fc-daygrid-day-number {
+    padding: 0.18rem;
+    font-size: 0.68rem;
+  }
+
+  :host ::ng-deep .full-calendar .fc-daygrid-event {
+    margin-top: 1px;
+    font-size: 0.62rem;
+  }
+}
+
+@media (max-height: 650px) {
+  .calendar-page {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .calendar-panel {
+    padding: 0.5rem;
+  }
+
+  .calendar-heading {
+    padding-bottom: 0.3rem;
+  }
+
+  .calendar-heading > div > p:last-child {
+    display: none;
   }
 }

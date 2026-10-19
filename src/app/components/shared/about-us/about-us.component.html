@@ -1,7 +1,59 @@
-<header class="home-header" routerLink="/">
-  Our Lady of Victory MYA Pitt Events
-  <!-- <div> Spiritual </div>
-  <div> Service </div>
-  <div> Social </div> -->
-</header>
+<app-header></app-header>
+<main class="about-page">
+  <section class="about-intro">
+    <h1>About {{ community.name }}</h1>
+    <p>{{ community.description }}</p>
+  </section>
+  <section class="about-content" aria-label="About this community">
+    <div class="about-message">
+      <span class="about-mark" aria-hidden="true"><i class="fa-solid fa-church"></i></span>
+      <div>
+        <h2>A place to connect and grow</h2>
+        <p>Explore the community, find upcoming gatherings, and discover ways to take part.</p>
+      </div>
+    </div>
+  </section>
+  @if (communityPath === '/mya') {
+    <section class="about-link-section" aria-labelledby="mya-pillars-title">
+      <h2 id="mya-pillars-title">MYA Pillars</h2>
+      <nav class="about-actions pillar-actions" aria-label="MYA Pillars">
+        <a routerLink="/mya/spiritual">
+          <i class="fa-solid fa-hands-praying" aria-hidden="true"></i>
+          <span>Spiritual</span>
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+        <a routerLink="/mya/social">
+          <i class="fa-solid fa-people-group" aria-hidden="true"></i>
+          <span>Social</span>
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+        <a routerLink="/mya/service">
+          <i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i>
+          <span>Service</span>
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </nav>
+    </section>
+  }
+  <section class="about-link-section" aria-labelledby="community-links-title">
+    <h2 id="community-links-title">Explore {{ community.name }}</h2>
+    <nav class="about-actions" aria-label="Explore community pages">
+      <a [routerLink]="communityPath + '/events'">
+        <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+        <span>Events</span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+      <a [routerLink]="communityPath + '/calendar'">
+        <i class="fa-solid fa-calendar-week" aria-hidden="true"></i>
+        <span>Calendar</span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+      <a [routerLink]="communityPath + '/resources'">
+        <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+        <span>Resources</span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </nav>
+  </section>
+</main>
 <app-footer></app-footer>

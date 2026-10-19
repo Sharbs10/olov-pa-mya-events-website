@@ -1,9 +1,52 @@
-<header class="home-header" routerLink="/">
-  Our Lady of Victory MYA Pitt Events
-</header>
-<main class="main-content">
-
-    <full-calendar class="full-calendar" #calendar *ngIf="calendarOptions" [options]="calendarOptions"></full-calendar>
-
+<app-header></app-header>
+<main class="calendar-page">
+  <section class="calendar-panel" aria-label="Community calendar">
+    <header class="calendar-heading">
+      <div>
+        <h1>Community Calendar</h1>
+        <p>Stay up to date with upcoming gatherings and events.</p>
+      </div>
+      <button class="calendar-download" type="button" (click)="downloadCalendarEvents()">
+        <i class="fa-solid fa-download" aria-hidden="true"></i>
+        <span>Download</span>
+      </button>
+    </header>
+    @if (calendarOptions) {
+      <full-calendar
+        class="full-calendar"
+        #calendar
+        [options]="calendarOptions"
+      ></full-calendar>
+    }
+  </section>
+  @if (selectedEvent; as event) {
+    <div class="event-dialog-backdrop" (click)="closeEventDetails()">
+      <section
+        class="event-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="event-dialog-title"
+        (click)="$event.stopPropagation()"
+      >
+        <button class="event-dialog-close" type="button" aria-label="Close event details" (click)="closeEventDetails()">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+        <p class="calendar-eyebrow">Community event</p>
+        <h2 id="event-dialog-title">{{ event.title }}</h2>
+        @if (event.start) {
+          <p class="event-dialog-detail">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            {{ event.start | date:'fullDate' }}<span *ngIf="event.end"> · {{ event.start | date:'shortTime' }}–{{ event.end | date:'shortTime' }}</span>
+          </p>
+        }
+        @if (event.location) {
+          <p class="event-dialog-detail"><i class="fa-solid fa-location-dot" aria-hidden="true"></i>{{ event.location }}</p>
+        }
+        @if (event.description) {
+          <p class="event-dialog-description">{{ event.description }}</p>
+        }
+      </section>
+    </div>
+  }
 </main>
 <app-footer></app-footer>

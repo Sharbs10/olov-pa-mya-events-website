@@ -10,5 +10,5 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'OLOV PA MYA Events Website';
+  title = 'OLOV Pittsburgh Hub';
 }

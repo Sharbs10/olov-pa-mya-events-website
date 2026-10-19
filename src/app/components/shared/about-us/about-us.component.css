@@ -1,0 +1,352 @@
+.about-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(1rem, 3vh, 2rem);
+  padding: clamp(1rem, 4vh, 3rem) clamp(1rem, 6vw, 5rem);
+  background:
+    radial-gradient(ellipse at 12% 12%, rgba(70, 151, 225, 0.16), transparent 36%),
+    linear-gradient(145deg, #f1f8ff 0%, #dceeff 52%, #f9fcff 100%);
+  color: #17324f;
+}
+
+.about-intro {
+  width: min(100%, 48rem);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-eyebrow {
+  margin: 0 0 0.5rem;
+  color: #28639b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.about-intro h1 {
+  margin: 0;
+  color: #15355b;
+  font-size: clamp(2rem, 6vh, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+.about-intro > p:last-child {
+  margin: 0.65rem auto 0;
+  color: #526b83;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  line-height: 1.5;
+}
+
+.about-content {
+  width: min(100%, 58rem);
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 16px 38px rgba(21, 53, 91, 0.1);
+}
+
+.about-message {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #dce8f2;
+}
+
+.about-mark {
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  flex: 0 0 3.5rem;
+  place-items: center;
+  border-radius: 1rem;
+  background: linear-gradient(145deg, #e2f1ff, #c7e3fb);
+  color: #205a8f;
+  font-size: 1.35rem;
+}
+
+.about-message h2 {
+  margin: 0;
+  color: #17324f;
+  font-size: clamp(1.05rem, 2.4vw, 1.4rem);
+  font-weight: 750;
+}
+
+.about-message p {
+  margin: 0.35rem 0 0;
+  color: #667c91;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.about-link-section {
+  width: min(100%, 58rem);
+  margin: 0 auto;
+  padding: clamp(0.85rem, 2.4vw, 1.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 12px 30px rgba(21, 53, 91, 0.08);
+}
+
+.about-link-section h2 {
+  margin: 0 0 0.25rem;
+  color: #17324f;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  font-weight: 750;
+}
+
+.about-actions {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  height: auto;
+  gap: 0.75rem;
+  padding: 1.25rem 0 0;
+  background: transparent;
+  color: inherit;
+  z-index: auto;
+}
+
+.pillar-actions {
+  padding-top: 0.5rem;
+}
+
+.about-actions a {
+  display: flex;
+  min-width: 0;
+  min-height: 3.25rem;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  border: 1px solid #dce8f2;
+  border-radius: 0.85rem;
+  background: #fff;
+  color: #205a8f;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.about-actions a > span {
+  flex: 1;
+}
+
+.about-actions a > i:last-child {
+  color: #6d8eaa;
+  font-size: 0.8rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about-actions a:hover {
+    border-color: #28639b;
+    background: #28639b;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(21, 53, 91, 0.1);
+  }
+
+  .about-actions a:hover > i {
+    color: #fff;
+  }
+}
+
+.about-actions a:focus-visible {
+  outline: 3px solid #2478bd;
+  outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+  .about-page {
+    gap: 0.75rem;
+    padding: 1rem 0.75rem;
+  }
+
+  .about-eyebrow {
+    margin-bottom: 0.25rem;
+    font-size: 0.62rem;
+  }
+
+  .about-intro h1 {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+  }
+
+  .about-intro > p:last-child {
+    margin-top: 0.4rem;
+    font-size: 0.88rem;
+  }
+
+  .about-content {
+    padding: 0.85rem;
+    border-radius: 0.95rem;
+  }
+
+  .about-link-section {
+    padding: 0.65rem;
+    border-radius: 0.85rem;
+  }
+
+  .about-message {
+    gap: 0.65rem;
+    padding-bottom: 0.8rem;
+  }
+
+  .about-mark {
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-basis: 2.75rem;
+    border-radius: 0.8rem;
+    font-size: 1.1rem;
+  }
+
+  .about-message p {
+    font-size: 0.82rem;
+  }
+
+  .about-actions {
+    gap: 0.45rem;
+    padding-top: 0.8rem;
+  }
+
+  .about-link-section h2 {
+    margin-bottom: 0.1rem;
+    font-size: 0.88rem;
+  }
+
+  .about-actions.pillar-actions {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding-top: 0.45rem;
+  }
+
+  .about-actions.pillar-actions a {
+    min-height: 2.25rem;
+    justify-content: flex-start;
+    gap: 0.6rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.82rem;
+  }
+
+  .about-actions.pillar-actions a > span {
+    flex: 1;
+  }
+
+  .about-actions a {
+    min-height: 2.75rem;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.35rem;
+    font-size: 0.78rem;
+  }
+
+  .about-actions a > i:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .about-actions a > i:last-child {
+    display: none;
+  }
+}
+
+@media (max-height: 650px) {
+  .about-page {
+    gap: 0.6rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .about-eyebrow {
+    display: none;
+  }
+
+  .about-intro h1 {
+    font-size: 1.7rem;
+  }
+
+  .about-intro > p:last-child {
+    display: none;
+  }
+
+  .about-content {
+    padding: 0.75rem;
+  }
+
+  .about-link-section {
+    padding: 0.55rem;
+  }
+
+  .about-message {
+    padding-bottom: 0.65rem;
+  }
+
+  .about-actions {
+    gap: 0.5rem;
+    padding-top: 0.65rem;
+  }
+
+  .about-actions.pillar-actions {
+    gap: 0.25rem;
+    padding-top: 0.35rem;
+  }
+
+  .about-actions.pillar-actions a {
+    min-height: 1.9rem;
+    padding: 0.25rem 0.45rem;
+  }
+}
+
+@media (max-height: 450px) {
+  .about-page {
+    gap: 0.25rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+  }
+
+  .about-intro h1 {
+    font-size: 1.4rem;
+  }
+
+  .about-content {
+    padding: 0.5rem;
+  }
+
+  .about-message {
+    gap: 0.5rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .about-mark {
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-basis: 2.25rem;
+  }
+
+  .about-actions {
+    gap: 0.35rem;
+    padding-top: 0.4rem;
+  }
+
+  .about-actions.pillar-actions {
+    gap: 0.2rem;
+    padding-top: 0.25rem;
+  }
+
+  .about-actions.pillar-actions a {
+    min-height: 1.65rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .about-actions a {
+    min-height: 2.3rem;
+    padding: 0.35rem;
+  }
+}

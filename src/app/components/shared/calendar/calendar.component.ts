@@ -1,129 +1,131 @@
-import { Component, Inject, PLATFORM_ID, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { FullCalendarComponent } from '@fullcalendar/angular';
-import { CalendarOptions } from '@fullcalendar/core';
-import { GoogleCalendarService } from '../../services/google-calendar.service';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarOptions, EventClickArg } from '@fullcalendar/core';
+import { GoogleCalendarService } from '../../../services/google-calendar.service';
 import { FooterComponent } from '../footer/footer.component';
+import { HeaderComponent } from '../header/header.component';
 
-import { CommonModule } from '@angular/common';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import { NgModule } from '@angular/core';
-
-import { ReactiveFormsModule } from '@angular/forms';
-
-import { RouterModule } from '@angular/router';
-
+interface CalendarEventDetails {
+  title: string;
+  start: Date | null;
+  end: Date | null;
+  description: string;
+  location: string;
+}
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, FullCalendarModule, FooterComponent, RouterModule],
+  imports: [CommonModule, FullCalendarModule, HeaderComponent, FooterComponent],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent implements OnInit, AfterViewInit {
+export class CalendarComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   events: any[] = [];
   calendarOptions!: CalendarOptions;
   isBrowser = false;
+  selectedEvent: CalendarEventDetails | null = null;
+  private readonly handleResize = () => this.adjustCalendarForScreen();
 
   constructor(
-    private gCal: GoogleCalendarService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private readonly gCal: GoogleCalendarService,
+    @Inject(PLATFORM_ID) private readonly platformId: object
   ) {}
 
-  async ngOnInit() {
-  this.isBrowser = isPlatformBrowser(this.platformId);
+  async ngOnInit(): Promise<void> {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    if (!this.isBrowser) return;
 
-  if (this.isBrowser) {
     try {
-      // 1️⃣ Lazy-load FullCalendar plugins first
       const plugins = await this.loadCalendarPlugins();
-
-      // 2️⃣ Initialize calendarOptions after plugins are ready
       this.calendarOptions = {
         plugins,
         initialView: 'dayGridMonth',
-        headerToolbar: {
-          left: 'prev,next today downloadCalendar',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        },
+        headerToolbar: this.getHeaderToolbar(),
         height: '100%',
+        expandRows: true,
+        fixedWeekCount: false,
+        dayMaxEvents: true,
+        eventColor: '#28639b',
+        eventTextColor: '#ffffff',
         customButtons: {
-          downloadCalendar: {
-            text: '📥 Download',
-            click: () => this.downloadCalendarEvents()
+          todayView: {
+            text: 'Today',
+            click: () => {
+              const calendarApi = this.calendarComponent.getApi();
+              calendarApi.today();
+              calendarApi.changeView('dayGridDay');
+            }
           }
         },
+        buttonText: {
+          dayGridWeek: 'Week',
+          dayGridMonth: 'Month'
+        },
         events: this.events,
-  eventClick: this.handleEventClick.bind(this)
+        eventClick: (eventInfo) => this.handleEventClick(eventInfo)
       };
 
-      // 3️⃣ Initialize GAPI client and load events
       await this.gCal.initClient();
       await this.loadEvents();
     } catch (err) {
       console.error('Calendar init error:', err);
     }
   }
-}
 
-  async ngAfterViewInit() {
+  ngAfterViewInit(): void {
     if (!this.isBrowser) return;
-
-    setTimeout(() => {
-      this.adjustCalendarForScreen(window.innerWidth);
-      window.addEventListener('resize', () =>
-        this.adjustCalendarForScreen(window.innerWidth)
-      );
-    });
+    window.addEventListener('resize', this.handleResize);
+    this.adjustCalendarForScreen();
   }
 
-  private async loadCalendarPlugins() {
-    // Lazy load the FullCalendar plugins dynamically in browser
-    const [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin] = await Promise.all([
-      import('@fullcalendar/daygrid').then(m => m.default),
-      import('@fullcalendar/timegrid').then(m => m.default),
-      import('@fullcalendar/interaction').then(m => m.default),
-      import('@fullcalendar/list').then(m => m.default),
-    ]);
-
-    return [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin];
-  }
-
-  private async loadEvents() {
-    if (!this.isBrowser) return;
-    const events = await this.gCal.listEvents();
-    this.events = events;
-    this.calendarOptions.events = events;
-  }
-
-  private adjustCalendarForScreen(width: number) {
-    if (!this.isBrowser || !this.calendarComponent) return;
-
-    const calendarApi = this.calendarComponent.getApi();
-    if (!calendarApi) return;
-
-    if (width < 768) {
-      calendarApi.changeView('listWeek');
-      calendarApi.setOption('headerToolbar', {
-        left: 'prev,next',
-        center: 'title',
-        right: 'downloadCalendar'
-      });
-    } else {
-      calendarApi.changeView('dayGridMonth');
-      calendarApi.setOption('headerToolbar', {
-        left: 'prev,next today downloadCalendar',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-      });
+  ngOnDestroy(): void {
+    if (this.isBrowser) {
+      window.removeEventListener('resize', this.handleResize);
     }
   }
 
-  private async downloadCalendarEvents() {
+  private async loadCalendarPlugins() {
+    const [dayGridPlugin, interactionPlugin] = await Promise.all([
+      import('@fullcalendar/daygrid').then(module => module.default),
+      import('@fullcalendar/interaction').then(module => module.default)
+    ]);
+
+    return [dayGridPlugin, interactionPlugin];
+  }
+
+  private async loadEvents(): Promise<void> {
+    const events = await this.gCal.listEvents();
+    this.events = events;
+
+    if (this.calendarOptions) this.calendarOptions.events = events;
+    if (this.calendarComponent) {
+      const calendarApi = this.calendarComponent.getApi();
+      calendarApi.removeAllEvents();
+      calendarApi.addEventSource(events);
+    }
+  }
+
+  private adjustCalendarForScreen(): void {
+    if (!this.isBrowser || !this.calendarComponent) return;
+
+    const calendarApi = this.calendarComponent.getApi();
+    calendarApi.setOption('headerToolbar', this.getHeaderToolbar());
+    calendarApi.updateSize();
+  }
+
+  private getHeaderToolbar(): CalendarOptions['headerToolbar'] {
+    return {
+      left: 'prev,next',
+      center: 'title',
+      right: 'todayView,dayGridWeek,dayGridMonth'
+    };
+  }
+
+  async downloadCalendarEvents(): Promise<void> {
     if (!this.isBrowser) return;
     const events = await this.gCal.listEvents();
     if (!events || events.length === 0) return;
@@ -149,41 +151,44 @@ END:VEVENT`).join('\n')}
 END:VCALENDAR`.trim();
   }
 
-  private triggerDownload(icsContent: string) {
+  private triggerDownload(icsContent: string): void {
     if (!this.isBrowser) return;
 
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'events.ics';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'events.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
   }
 
-  private formatDate(date: Date) {
+  private formatDate(date: Date): string {
     return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
   }
 
-  private escapeText(text: string) {
+  private escapeText(text: string): string {
     return text.replace(/,/g, '\\,').replace(/;/g, '\\;').replace(/\n/g, '\\n');
   }
 
-  handleEventClick(clickInfo: any) {
-  const event = clickInfo.event;
+  handleEventClick(clickInfo: EventClickArg): void {
+    const event = clickInfo.event;
+    this.selectedEvent = {
+      title: event.title,
+      start: event.start,
+      end: event.end,
+      description: typeof event.extendedProps['description'] === 'string'
+        ? event.extendedProps['description']
+        : '',
+      location: typeof event.extendedProps['location'] === 'string'
+        ? event.extendedProps['location']
+        : ''
+    };
+  }
 
-  // Example: use alert (for testing)
-  alert(
-    `Event: ${event.title}\n` +
-    `Start: ${event.start?.toLocaleString()}\n` +
-    `End: ${event.end?.toLocaleString()}\n` +
-    `Description: ${event.extendedProps.description || ''}\n` +
-    `Location: ${event.extendedProps.location || ''}`
-  );
-
-  // If you want a modal, open your Angular modal here instead of alert
-}
+  closeEventDetails(): void {
+    this.selectedEvent = null;
+  }
 }

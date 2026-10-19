@@ -1,15 +1,42 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { EventsComponent } from './components/events/events.component';
-import { BoardComponent } from './components/board/board.component';
-import { PrivatePolicyComponent } from './components/private-policy/private-policy.component';
-import { AboutUsComponent } from './components/about-us/about-us.component';
-import { CalendarComponent } from './components/calendar/calendar.component';
+import { OlovHubComponent } from './components/olov-hub/olov-hub.component';
+import { McfComponent } from './components/mcf/mcf.component';
+import { MyoComponent } from './components/myo/myo.component';
+import { MyaComponent } from './components/mya/mya.component';
+import { AboutUsComponent } from './components/shared/about-us/about-us.component';
+import { EventsComponent } from './components/shared/events/events.component';
+import { CalendarComponent } from './components/shared/calendar/calendar.component';
+import { ResourcesComponent } from './components/shared/resources/resources.component';
+import { DailyVideoComponent } from './components/mcf/daily-video/daily-video.component';
+import { QuizletComponent } from './components/mcf/quizlet/quizlet.component';
+import { SpiritualComponent } from './components/mya/spiritual/spiritual.component';
+import { ServiceComponent } from './components/mya/service/service.component';
+import { SocialComponent } from './components/mya/social/social.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'events', component: EventsComponent },
-  { path: 'calendar', component: CalendarComponent },
-  { path: 'board', component: BoardComponent },
-  { path: 'about-us', component: AboutUsComponent },
+  { path: '', component: OlovHubComponent },
+  { path: 'mcf', component: McfComponent },
+  { path: 'mcf/about-us', component: AboutUsComponent },
+  { path: 'mcf/daily-video', component: DailyVideoComponent },
+  { path: 'mcf/quizlet', component: QuizletComponent },
+  { path: 'mcf/events', component: EventsComponent },
+  { path: 'mcf/calendar', component: CalendarComponent },
+  { path: 'mcf/resources', component: ResourcesComponent },
+  { path: 'myo', component: MyoComponent },
+  { path: 'myo/about-us', component: AboutUsComponent },
+  { path: 'myo/events', component: EventsComponent },
+  { path: 'myo/calendar', component: CalendarComponent },
+  { path: 'myo/resources', component: ResourcesComponent },
+  { path: 'mya', component: MyaComponent },
+  { path: 'mya/spiritual', component: SpiritualComponent },
+  { path: 'mya/service', component: ServiceComponent },
+  { path: 'mya/social', component: SocialComponent },
+  { path: 'mya/about-us', component: AboutUsComponent },
+  { path: 'mya/events', component: EventsComponent },
+  { path: 'mya/calendar', component: CalendarComponent },
+  { path: 'mya/resources', component: ResourcesComponent },
+  { path: 'home', redirectTo: 'mya', pathMatch: 'full' },
+  { path: 'about-us', redirectTo: 'mya/about-us', pathMatch: 'full' },
+  { path: 'events', redirectTo: 'mya/events', pathMatch: 'full' },
+  { path: 'calendar', redirectTo: 'mya/calendar', pathMatch: 'full' },
 ];

@@ -1,0 +1,33 @@
+<app-header></app-header>
+<main class="resources-content" [class.mcf-resources]="isMcf">
+  @if (isMcf) {
+    <section class="resources-panel" aria-labelledby="resources-title">
+      <header>
+        <h1 id="resources-title">MCF Resources</h1>
+        <p>Continue learning and reflecting with these formation resources.</p>
+      </header>
+      <nav class="resource-links" aria-label="MCF resources">
+        <a routerLink="/mcf/daily-video">
+          <span class="resource-icon" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span>
+          <span class="resource-copy">
+            <strong>Daily Videos</strong>
+            <span>Watch and reflect together.</span>
+          </span>
+          <i class="fa-solid fa-arrow-right resource-arrow" aria-hidden="true"></i>
+        </a>
+        <a routerLink="/mcf/quizlet">
+          <span class="resource-icon" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span>
+          <span class="resource-copy">
+            <strong>Quizlet</strong>
+            <span>Review and practice what you learn.</span>
+          </span>
+          <i class="fa-solid fa-arrow-right resource-arrow" aria-hidden="true"></i>
+        </a>
+      </nav>
+    </section>
+  } @else {
+    <h1>Resources</h1>
+    <p>Helpful resources will be added here.</p>
+  }
+</main>
+<app-footer></app-footer>
