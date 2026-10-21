@@ -33,6 +33,15 @@
         </button>
         <p class="calendar-eyebrow">Community event</p>
         <h2 id="event-dialog-title">{{ event.title }}</h2>
+        @if (event.imageUrl) {
+          <a
+            class="event-dialog-image-link"
+            [routerLink]="eventsRoute"
+            [attr.aria-label]="'View ' + event.title + ' in Events'"
+          >
+            <img class="event-dialog-image" [src]="event.imageUrl" [alt]="event.title" />
+          </a>
+        }
         @if (event.start) {
           <p class="event-dialog-detail">
             <i class="fa-regular fa-calendar" aria-hidden="true"></i>

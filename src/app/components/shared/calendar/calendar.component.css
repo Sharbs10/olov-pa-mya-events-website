@@ -209,7 +209,7 @@
   position: relative;
   width: min(100%, 34rem);
   max-height: 90%;
-  overflow: hidden;
+  overflow-y: auto;
   padding: clamp(1.25rem, 4vw, 2rem);
   border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 1.1rem;
@@ -222,6 +222,19 @@
   color: #17324f;
   font-size: clamp(1.25rem, 4vw, 1.75rem);
   line-height: 1.2;
+}
+
+.event-dialog-image-link {
+  display: block;
+}
+
+.event-dialog-image {
+  display: block;
+  width: 100%;
+  max-height: min(45vh, 24rem);
+  margin: 0 0 1rem;
+  border-radius: 0.75rem;
+  object-fit: contain;
 }
 
 .event-dialog-close {

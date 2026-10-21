@@ -2,6 +2,68 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../environments/environment';
 
+export interface CalendarEvent {
+  id?: string;
+  recurringEventId?: string;
+  title: string;
+  start: string;
+  end: string;
+  description: string;
+  location: string;
+  imageUrl?: string;
+}
+
+interface GoogleCalendarAttachment {
+  fileId?: string;
+  fileUrl?: string;
+  mimeType?: string;
+}
+
+interface GoogleCalendarApiEvent {
+  id?: string;
+  recurringEventId?: string;
+  summary?: string;
+  start?: { dateTime?: string; date?: string };
+  end?: { dateTime?: string; date?: string };
+  description?: string;
+  location?: string;
+  attachments?: GoogleCalendarAttachment[];
+}
+
+export function mapGoogleCalendarEvent(event: GoogleCalendarApiEvent): CalendarEvent {
+  const imageAttachment = event.attachments?.find((attachment) =>
+    attachment.fileUrl &&
+    (attachment.mimeType?.startsWith('image/') ||
+      /\.(avif|gif|jpe?g|png|webp)(?:[?#]|$)/i.test(attachment.fileUrl))
+  );
+
+  return {
+    id: event.id,
+    recurringEventId: event.recurringEventId,
+    title: event.summary || '',
+    start: event.start?.dateTime || event.start?.date || '',
+    end: event.end?.dateTime || event.end?.date || '',
+    description: event.description || '',
+    location: event.location || '',
+    imageUrl: imageAttachment ? getImageUrl(imageAttachment) : undefined
+  };
+}
+
+function getImageUrl(attachment: GoogleCalendarAttachment): string | undefined {
+  if (!attachment.fileUrl) {
+    return undefined;
+  }
+
+  if (attachment.fileId) {
+    const imageUrl = new URL('https://drive.google.com/thumbnail');
+    imageUrl.searchParams.set('id', attachment.fileId);
+    imageUrl.searchParams.set('sz', 'w1200');
+    return imageUrl.toString();
+  }
+
+  return attachment.fileUrl;
+}
+
 @Injectable({ providedIn: 'root' })
 export class GoogleCalendarService {
   private API_KEY = environment.firebase.apiKey;
@@ -53,7 +115,7 @@ export class GoogleCalendarService {
   }
 
   // List events
-  async listEvents(): Promise<any[]> {
+  async listEvents(): Promise<CalendarEvent[]> {
     if (!isPlatformBrowser(this.platformId)) return [];
 
     if (!this.initialized) await this.initClient();
@@ -87,13 +149,7 @@ export class GoogleCalendarService {
 
     console.log(`🟢 Loaded ${allItems.length} events:`, allItems);
 
-    return allItems.map((event: any) => ({
-      title: event.summary,
-      start: event.start?.dateTime || event.start?.date,
-      end: event.end?.dateTime || event.end?.date,
-      description: event.description || '',
-      location: event.location || '',
-    }));
+    return allItems.map((event: GoogleCalendarApiEvent) => mapGoogleCalendarEvent(event));
   }
 
 }

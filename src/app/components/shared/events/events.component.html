@@ -1,40 +1,60 @@
 <app-header></app-header>
-<main class="events-page">
+<main
+  class="events-page"
+  (mouseenter)="pauseSlideshow()"
+  (mouseleave)="resumeSlideshow()"
+>
   <header class="events-heading">
     <h1>Events</h1>
     <p>Discover what's happening in our community.</p>
   </header>
-  <section class="events-showcase" aria-label="Featured event posters">
-    @if (pImages.length > 0) {
+  <section class="events-showcase" aria-label="Calendar event photos">
+    @if (eventsError) {
+      <p class="calendar-events-message" role="status">{{ eventsError }}</p>
+    } @else if (imageEvents.length > 0) {
+      <article class="calendar-event-card">
+        <a
+          class="event-image-container"
+          [routerLink]="calendarRoute"
+          [attr.aria-label]="'View ' + imageEvents[currentIndex].title + ' on the calendar'"
+        >
+          <img
+            [src]="imageEvents[currentIndex].imageUrl"
+            [alt]="imageEvents[currentIndex].title"
+            class="event-poster"
+          />
+        </a>
+      </article>
+    } @else {
+      <p class="calendar-events-message" role="status">No upcoming calendar events with attached photos yet.</p>
+    }
+  </section>
+  <div class="event-controls-row" aria-live="polite">
+    @if (imageEvents.length > 0) {
       <button
         class="events-control events-previous"
         type="button"
-        aria-label="Show previous event poster"
-        (click)="showPreviousPoster()"
+        aria-label="Show previous calendar event"
+        [disabled]="imageEvents.length < 2"
+        (click)="showPreviousEvent()"
       >
         <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
       </button>
-      <img
-        [src]="pImages[pCurrentIndex]"
-        [alt]="'Featured event poster ' + (pCurrentIndex + 1) + ' of ' + pImages.length"
-        class="event-poster"
-        (mouseenter)="pausePSlideshow()"
-        (mouseleave)="resumePSlideshow()"
-      />
+      <div class="calendar-event-details">
+        <h2>{{ imageEvents[currentIndex].title }}</h2>
+        @if (imageEvents[currentIndex].start) {
+          <p><i class="fa-regular fa-calendar" aria-hidden="true"></i>{{ imageEvents[currentIndex].start | date:'fullDate' }}</p>
+        }
+      </div>
       <button
         class="events-control events-next"
         type="button"
-        aria-label="Show next event poster"
-        (click)="showNextPoster()"
+        aria-label="Show next calendar event"
+        [disabled]="imageEvents.length < 2"
+        (click)="showNextEvent()"
       >
         <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
       </button>
-    }
-  </section>
-  <div class="events-pagination" aria-live="polite">
-    <span>Featured events</span>
-    @if (pImages.length > 0) {
-      <span>{{ pCurrentIndex + 1 }} / {{ pImages.length }}</span>
     }
   </div>
 </main>

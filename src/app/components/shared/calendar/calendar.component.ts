@@ -1,4 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventClickArg } from '@fullcalendar/core';
@@ -12,12 +13,13 @@ interface CalendarEventDetails {
   end: Date | null;
   description: string;
   location: string;
+  imageUrl: string;
 }
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, FullCalendarModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FullCalendarModule, HeaderComponent, FooterComponent, RouterLink],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
@@ -28,12 +30,17 @@ export class CalendarComponent implements OnInit, AfterViewInit, OnDestroy {
   calendarOptions!: CalendarOptions;
   isBrowser = false;
   selectedEvent: CalendarEventDetails | null = null;
+  readonly eventsRoute: string;
   private readonly handleResize = () => this.adjustCalendarForScreen();
 
   constructor(
     private readonly gCal: GoogleCalendarService,
-    @Inject(PLATFORM_ID) private readonly platformId: object
-  ) {}
+    @Inject(PLATFORM_ID) private readonly platformId: object,
+    router: Router
+  ) {
+    const community = router.url.split('/').filter(Boolean)[0] || 'mya';
+    this.eventsRoute = `/${community}/events`;
+  }
 
   async ngOnInit(): Promise<void> {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -184,6 +191,9 @@ END:VCALENDAR`.trim();
         : '',
       location: typeof event.extendedProps['location'] === 'string'
         ? event.extendedProps['location']
+        : '',
+      imageUrl: typeof event.extendedProps['imageUrl'] === 'string'
+        ? event.extendedProps['imageUrl']
         : ''
     };
   }

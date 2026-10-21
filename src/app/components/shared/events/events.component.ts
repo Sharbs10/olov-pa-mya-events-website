@@ -1,85 +1,104 @@
 import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
+import { CalendarEvent, GoogleCalendarService } from '../../../services/google-calendar.service';
 
 @Component({
   selector: 'app-events',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent, RouterLink],
   templateUrl: './events.component.html',
   styleUrl: './events.component.css'
 })
 export class EventsComponent implements OnInit, OnDestroy {
 
 
-  pCurrentIndex = 0;
-  pIntervalId: ReturnType<typeof setInterval> | null = null;
-  isDesktop = true;
-  private readonly handleResize = () => this.checkScreenSize();
-  pImages: string[] = [
-    'assets/images/Puttshack.JPG',
-    'assets/images/StSMass.JPG',
-  ]
+  currentIndex = 0;
+  slideshowIntervalId: ReturnType<typeof setInterval> | null = null;
+  imageEvents: CalendarEvent[] = [];
+  eventsError = '';
+  readonly calendarRoute: string;
 
-  constructor(@Inject(PLATFORM_ID) private readonly platformId: object) {}
+  constructor(
+    private readonly googleCalendar: GoogleCalendarService,
+    router: Router,
+    @Inject(PLATFORM_ID) private readonly platformId: object
+  ) {
+    const community = router.url.split('/').filter(Boolean)[0] || 'mya';
+    this.calendarRoute = `/${community}/calendar`;
+  }
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
     if (isPlatformBrowser(this.platformId)) {
-      // Only run this code in the browser
-      this.checkScreenSize();
-      window.addEventListener('resize', this.handleResize);
-      this.startPSlideshow();
+      try {
+        const events = await this.googleCalendar.listEvents();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const upcomingImageEvents = events
+          .filter((event) =>
+            Boolean(event.imageUrl) &&
+            Boolean(event.start) &&
+            new Date(event.start).getTime() >= today.getTime()
+          )
+          .sort((first, second) => new Date(first.start).getTime() - new Date(second.start).getTime());
+        const eventSeries = new Map<string, CalendarEvent>();
+
+        upcomingImageEvents.forEach((event) => {
+          const key = event.recurringEventId || event.id || `${event.title}-${event.start}`;
+          if (!eventSeries.has(key)) {
+            eventSeries.set(key, event);
+          }
+        });
+
+        this.imageEvents = [...eventSeries.values()];
+        this.startSlideshow();
+      } catch (error) {
+        console.error('Could not load event images:', error);
+        this.eventsError = 'Event images could not be loaded. Please try again later.';
+      }
     }
   }
 
- checkScreenSize(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.isDesktop = window.innerWidth > 768;
-    }
-  }
-
-  pausePSlideshow(): void {
+  pauseSlideshow(): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    if (this.pIntervalId) {
-      clearInterval(this.pIntervalId);
-      this.pIntervalId = null;
+    if (this.slideshowIntervalId) {
+      clearInterval(this.slideshowIntervalId);
+      this.slideshowIntervalId = null;
     }
   }
 
-  resumePSlideshow(): void {
-    if (!isPlatformBrowser(this.platformId) || !this.isDesktop) return;
-
-    if (!this.pIntervalId) {
-      this.startPSlideshow();
+  resumeSlideshow(): void {
+    if (isPlatformBrowser(this.platformId) && !this.slideshowIntervalId) {
+      this.startSlideshow();
     }
   }
 
-  showPreviousPoster(): void {
-    this.pCurrentIndex = (this.pCurrentIndex - 1 + this.pImages.length) % this.pImages.length;
-    this.pausePSlideshow();
+  showPreviousEvent(): void {
+    if (this.imageEvents.length < 2) return;
+    this.currentIndex = (this.currentIndex - 1 + this.imageEvents.length) % this.imageEvents.length;
   }
 
-  showNextPoster(): void {
-    this.pCurrentIndex = (this.pCurrentIndex + 1) % this.pImages.length;
-    this.pausePSlideshow();
+  showNextEvent(): void {
+    if (this.imageEvents.length < 2) return;
+    this.currentIndex = (this.currentIndex + 1) % this.imageEvents.length;
   }
 
-  startPSlideshow(): void {
+  startSlideshow(): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    if (!this.pIntervalId && this.pImages.length > 0) {
-      this.pIntervalId = setInterval(() => {
-        this.pCurrentIndex = (this.pCurrentIndex + 1) % this.pImages.length;
-      }, 3000); 
+    if (!this.slideshowIntervalId && this.imageEvents.length > 1) {
+      this.slideshowIntervalId = setInterval(() => {
+        this.currentIndex = (this.currentIndex + 1) % this.imageEvents.length;
+      }, 8000);
     }
   }
 
   ngOnDestroy(): void {
     if (isPlatformBrowser(this.platformId)) {
-      if (this.pIntervalId) clearInterval(this.pIntervalId);
-      window.removeEventListener('resize', this.handleResize);
+      this.pauseSlideshow();
     }
   }
 }
