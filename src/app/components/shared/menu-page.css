@@ -10,17 +10,44 @@
   flex-direction: column;
   justify-content: center;
   padding: clamp(1rem, 4vh, 3rem) clamp(1rem, 5vw, 2rem);
-  background:
-    radial-gradient(ellipse at 12% 12%, rgba(70, 151, 225, 0.18), transparent 36%),
-    radial-gradient(ellipse at 88% 86%, rgba(34, 82, 133, 0.12), transparent 34%),
-    linear-gradient(145deg, #f1f8ff 0%, #dceeff 48%, #f9fcff 100%);
+  background: #fff;
   color: #17324f;
   text-align: center;
 }
 
 .menu-intro {
+  position: relative;
+  z-index: 1;
   width: min(100%, 46rem);
   margin: 0 auto clamp(1rem, 3vh, 2rem);
+}
+
+.community-subtitle {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 3.75rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  box-sizing: border-box;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid #d9e6f1;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 3px 12px rgba(21, 53, 91, 0.1);
+  text-align: center;
+}
+
+.community-subtitle .menu-heading {
+  font-size: 1.4rem;
+  letter-spacing: -0.025em;
+}
+
+.community-subtitle .menu-description {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.35;
 }
 
 .menu-eyebrow {
@@ -55,13 +82,15 @@
 .menu-description {
   max-width: 34rem;
   margin: 1rem auto 0;
-  color: #526b83;
+  color: #344f69;
   font-size: clamp(1rem, 2.5vw, 1.15rem);
+  font-weight: 550;
   line-height: 1.6;
 }
 
 .menu-grid {
   position: relative;
+  z-index: 1;
   height: auto;
   width: min(100%, 62rem);
   margin: 0 auto;
@@ -217,6 +246,20 @@
     margin: 0 auto 0.5rem;
   }
 
+  .community-subtitle {
+    min-height: 3.25rem;
+    gap: 0.55rem;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .community-subtitle .menu-heading {
+    font-size: 1.15rem;
+  }
+
+  .community-subtitle .menu-description {
+    font-size: 0.84rem;
+  }
+
   .menu-eyebrow {
     margin-bottom: 0.35rem;
     font-size: 0.62rem;
@@ -313,10 +356,6 @@
     margin-bottom: 0.5rem;
   }
 
-  .menu-description {
-    display: none;
-  }
-
   .menu-card,
   .hub-card {
     min-height: 3.25rem;
@@ -356,6 +395,16 @@
 
   .menu-intro {
     margin-bottom: 0.25rem;
+  }
+
+  .community-menu-page .menu-intro {
+    padding: 0.45rem 1rem;
+  }
+
+  .community-menu-page .menu-description {
+    margin-top: 0.2rem;
+    font-size: 0.82rem;
+    line-height: 1.2;
   }
 
   .menu-card,

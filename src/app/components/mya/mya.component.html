@@ -1,9 +1,10 @@
 <app-header></app-header>
+<header class="community-subtitle">
+  <h1 class="menu-heading">MYA</h1>
+  <p class="menu-description">Maronite Young Adults</p>
+</header>
 <main class="menu-page community-menu-page">
-  <header class="menu-intro">
-    <h1 class="menu-heading">MYA</h1>
-    <p class="menu-description">Maronite Young Adults</p>
-  </header>
+  <app-photo-collage [images]="backgroundImages"></app-photo-collage>
   <nav class="menu-grid" aria-label="MYA sections">
     <a class="menu-card" routerLink="/mya/about-us"><span class="menu-card-icon" aria-hidden="true"><i class="fa-solid fa-circle-info"></i></span><span class="menu-card-copy"><span class="menu-card-title">About Us</span><span class="menu-card-description">Get to know our community.</span></span><i class="menu-card-arrow fa-solid fa-arrow-right" aria-hidden="true"></i></a>
     <a class="menu-card" routerLink="/mya/events"><span class="menu-card-icon" aria-hidden="true"><i class="fa-solid fa-calendar-days"></i></span><span class="menu-card-copy"><span class="menu-card-title">Events</span><span class="menu-card-description">See what's happening in the community.</span></span><i class="menu-card-arrow fa-solid fa-arrow-right" aria-hidden="true"></i></a>

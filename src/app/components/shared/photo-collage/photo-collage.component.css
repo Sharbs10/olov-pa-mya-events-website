@@ -1,0 +1,26 @@
+.photo-collage {
+  position: absolute;
+  z-index: 0;
+  inset: 1% 1.5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.photo-source {
+  display: none !important;
+}
+
+.mosaic-root {
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.mosaic-photo {
+  position: absolute;
+  display: block;
+  object-fit: contain;
+}
