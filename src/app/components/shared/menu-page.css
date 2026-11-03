@@ -133,6 +133,14 @@
     color: #fff;
   }
 
+  .menu-card.hub-card.mcf-card:hover,
+  .menu-card.hub-card.myo-card:hover,
+  .menu-card.hub-card.mya-card:hover {
+    border-color: #28639b;
+    background: #28639b;
+    color: #fff;
+  }
+
   .menu-card:hover .menu-card-icon {
     background: rgba(255, 255, 255, 0.16);
     color: #fff;
@@ -225,23 +233,6 @@
   justify-content: center;
   background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(1px);
-}
-
-.hub-card.mcf-card:hover,
-.hub-card.myo-card:hover,
-.hub-card.mya-card:hover {
-  border-color: var(--card-accent);
-  background: rgba(255, 255, 255, 0.48);
-  color: #17324f;
-}
-
-.hub-card.mcf-card:hover .menu-card-description,
-.hub-card.myo-card:hover .menu-card-description,
-.hub-card.mya-card:hover .menu-card-description,
-.hub-card.mcf-card:hover .menu-card-arrow,
-.hub-card.myo-card:hover .menu-card-arrow,
-.hub-card.mya-card:hover .menu-card-arrow {
-  color: #667c91;
 }
 
 .hub-card .menu-card-icon {
