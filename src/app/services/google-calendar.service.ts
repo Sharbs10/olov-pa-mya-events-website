@@ -2,6 +2,53 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../environments/environment';
 
+export type CalendarCommunity = 'mcf' | 'mya' | 'myo';
+export type CalendarEventRange = 'all' | 'upcoming';
+export const DEFAULT_CALENDAR_EVENT_IMAGE = 'assets/images/OLOV.jpg';
+const MYA_HALLOWEEN_EVENT_IMAGE = 'assets/images/MCF_Halloween.jpg';
+
+export function getCalendarCommunity(route: string): CalendarCommunity {
+  const community = route.split('/').filter(Boolean)[0];
+  return community === 'mcf' || community === 'myo' || community === 'mya'
+    ? community
+    : 'mya';
+}
+
+export function getCalendarId(community: CalendarCommunity): string {
+  const calendarId = environment.calendarIds[community].trim();
+  if (!calendarId) {
+    throw new Error(
+      `No Google Calendar ID is configured for ${community.toUpperCase()}. ` +
+      `Add it to calendarIds.${community} in the environment configuration.`
+    );
+  }
+  return calendarId;
+}
+
+export function isEventTodayOrFuture(start: string, now = new Date()): boolean {
+  if (!start) {
+    return false;
+  }
+
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(start);
+  if (dateOnly) {
+    const todayDate = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, '0'),
+      String(today.getDate()).padStart(2, '0')
+    ].join('-');
+    return start >= todayDate;
+  }
+
+  const eventDate = new Date(start);
+  if (Number.isNaN(eventDate.getTime())) {
+    return false;
+  }
+  eventDate.setHours(0, 0, 0, 0);
+  return eventDate.getTime() >= today.getTime();
+}
+
 export interface CalendarEvent {
   id?: string;
   recurringEventId?: string;
@@ -10,13 +57,14 @@ export interface CalendarEvent {
   end: string;
   description: string;
   location: string;
-  imageUrl?: string;
+  imageUrl: string;
 }
 
 interface GoogleCalendarAttachment {
   fileId?: string;
   fileUrl?: string;
   mimeType?: string;
+  title?: string;
 }
 
 interface GoogleCalendarApiEvent {
@@ -30,26 +78,41 @@ interface GoogleCalendarApiEvent {
   attachments?: GoogleCalendarAttachment[];
 }
 
-export function mapGoogleCalendarEvent(event: GoogleCalendarApiEvent): CalendarEvent {
+export function mapGoogleCalendarEvent(
+  event: GoogleCalendarApiEvent,
+  community?: CalendarCommunity
+): CalendarEvent {
   const imageAttachment = event.attachments?.find((attachment) =>
     attachment.fileUrl &&
     (attachment.mimeType?.startsWith('image/') ||
       /\.(avif|gif|jpe?g|png|webp)(?:[?#]|$)/i.test(attachment.fileUrl))
   );
+  const start = event.start?.dateTime || event.start?.date || '';
+  const isMyaHalloweenEvent = community === 'mya' &&
+    event.summary?.trim().toLowerCase() === 'halloween' &&
+    start.startsWith('2025-10-31');
 
   return {
     id: event.id,
     recurringEventId: event.recurringEventId,
-    title: event.summary || '',
-    start: event.start?.dateTime || event.start?.date || '',
+    title: event.summary || 'Untitled event',
+    start,
     end: event.end?.dateTime || event.end?.date || '',
     description: event.description || '',
     location: event.location || '',
-    imageUrl: imageAttachment ? getImageUrl(imageAttachment) : undefined
+    imageUrl: imageAttachment
+      ? getImageUrl(imageAttachment) || DEFAULT_CALENDAR_EVENT_IMAGE
+      : isMyaHalloweenEvent
+        ? MYA_HALLOWEEN_EVENT_IMAGE
+        : DEFAULT_CALENDAR_EVENT_IMAGE
   };
 }
 
 function getImageUrl(attachment: GoogleCalendarAttachment): string | undefined {
+  if (attachment.title?.toLowerCase() === 'olov.jpg') {
+    return 'assets/images/OLOV.jpg';
+  }
+
   if (!attachment.fileUrl) {
     return undefined;
   }
@@ -69,7 +132,6 @@ export class GoogleCalendarService {
   private API_KEY = environment.firebase.apiKey;
   private DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
   private initialized = false;
-  private CALENDAR_ID = environment.calendarId;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -115,41 +177,49 @@ export class GoogleCalendarService {
   }
 
   // List events
-  async listEvents(): Promise<CalendarEvent[]> {
+  async listEvents(
+    community: CalendarCommunity = 'mya',
+    range: CalendarEventRange = 'upcoming'
+  ): Promise<CalendarEvent[]> {
     if (!isPlatformBrowser(this.platformId)) return [];
 
+    const calendarId = getCalendarId(community);
     if (!this.initialized) await this.initClient();
     const gapi = (window as any).gapi;
     if (!gapi) return [];
 
-    // Include all past, present, and future events
-    const timeMin = new Date('1970-01-01T00:00:00Z').toISOString();
-    // Optional: remove timeMax to get all future events
-    // const timeMax = new Date('2100-01-01T00:00:00Z').toISOString();
+    const request: Record<string, unknown> = {
+      calendarId,
+      showDeleted: false,
+      singleEvents: true,
+      orderBy: 'startTime',
+      maxResults: 2500,
+    };
+    if (range === 'upcoming') {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      request['timeMin'] = today.toISOString();
+    }
 
-    let allItems: any[] = [];
+    let allItems: GoogleCalendarApiEvent[] = [];
     let nextPageToken: string | undefined = undefined;
 
     do {
       const response: any = await gapi.client.calendar.events.list({
-        calendarId: this.CALENDAR_ID,
-        timeMin,
-        showDeleted: false,
-        singleEvents: true,
-        orderBy: 'startTime',
-        maxResults: 2500, // max allowed by Google Calendar API
+        ...request,
         pageToken: nextPageToken,
       });
 
-      const items = response.result.items || [];
+      const items: GoogleCalendarApiEvent[] = response.result.items || [];
       allItems = allItems.concat(items);
 
       nextPageToken = response.result.nextPageToken;
     } while (nextPageToken);
 
-    console.log(`🟢 Loaded ${allItems.length} events:`, allItems);
-
-    return allItems.map((event: GoogleCalendarApiEvent) => mapGoogleCalendarEvent(event));
+    const events = allItems.map((event) => mapGoogleCalendarEvent(event, community));
+    return range === 'all'
+      ? events
+      : events.filter((event) => isEventTodayOrFuture(event.start));
   }
 
 }

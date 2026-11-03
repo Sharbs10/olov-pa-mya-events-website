@@ -127,6 +127,16 @@
   white-space: nowrap;
 }
 
+.calendar-event-details p.event-description {
+  display: -webkit-box;
+  max-height: 4.35em;
+  margin-top: 0.45rem;
+  overflow: hidden;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
 .calendar-event-details i {
   color: #28639b;
 }

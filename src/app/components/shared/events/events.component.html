@@ -8,49 +8,64 @@
     <h1>Events</h1>
     <p>Discover what's happening in our community.</p>
   </header>
-  <section class="events-showcase" aria-label="Calendar event photos">
+  <section class="events-showcase" aria-label="Community calendar events">
     @if (eventsError) {
       <p class="calendar-events-message" role="status">{{ eventsError }}</p>
-    } @else if (imageEvents.length > 0) {
+    } @else if (calendarEvents.length > 0) {
       <article class="calendar-event-card">
         <a
           class="event-image-container"
           [routerLink]="calendarRoute"
-          [attr.aria-label]="'View ' + imageEvents[currentIndex].title + ' on the calendar'"
+          [attr.aria-label]="'View ' + calendarEvents[currentIndex].title + ' on the calendar'"
         >
           <img
-            [src]="imageEvents[currentIndex].imageUrl"
-            [alt]="imageEvents[currentIndex].title"
+            [src]="calendarEvents[currentIndex].imageUrl"
+            [alt]="calendarEvents[currentIndex].title"
             class="event-poster"
           />
         </a>
       </article>
     } @else {
-      <p class="calendar-events-message" role="status">No upcoming calendar events with attached photos yet.</p>
+      <p class="calendar-events-message" role="status">No events scheduled for today or later.</p>
     }
   </section>
   <div class="event-controls-row" aria-live="polite">
-    @if (imageEvents.length > 0) {
+    @if (calendarEvents.length > 0) {
       <button
         class="events-control events-previous"
         type="button"
         aria-label="Show previous calendar event"
-        [disabled]="imageEvents.length < 2"
+        [disabled]="calendarEvents.length < 2"
         (click)="showPreviousEvent()"
       >
         <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
       </button>
       <div class="calendar-event-details">
-        <h2>{{ imageEvents[currentIndex].title }}</h2>
-        @if (imageEvents[currentIndex].start) {
-          <p><i class="fa-regular fa-calendar" aria-hidden="true"></i>{{ imageEvents[currentIndex].start | date:'fullDate' }}</p>
+        <h2>{{ calendarEvents[currentIndex].title }}</h2>
+        @if (calendarEvents[currentIndex].start) {
+          <p>
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            {{ calendarEvents[currentIndex].start | date:'fullDate' }}
+            @if (calendarEvents[currentIndex].start.includes('T')) {
+              · {{ calendarEvents[currentIndex].start | date:'shortTime' }}
+              @if (calendarEvents[currentIndex].end) {
+                –{{ calendarEvents[currentIndex].end | date:'shortTime' }}
+              }
+            }
+          </p>
+        }
+        @if (calendarEvents[currentIndex].location) {
+          <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i>{{ calendarEvents[currentIndex].location }}</p>
+        }
+        @if (calendarEvents[currentIndex].description) {
+          <p class="event-description">{{ calendarEvents[currentIndex].description }}</p>
         }
       </div>
       <button
         class="events-control events-next"
         type="button"
         aria-label="Show next calendar event"
-        [disabled]="imageEvents.length < 2"
+        [disabled]="calendarEvents.length < 2"
         (click)="showNextEvent()"
       >
         <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>

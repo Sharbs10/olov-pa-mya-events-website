@@ -3,7 +3,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
-import { CalendarEvent, GoogleCalendarService } from '../../../services/google-calendar.service';
+import {
+  CalendarEvent,
+  CalendarCommunity,
+  getCalendarCommunity,
+  GoogleCalendarService
+} from '../../../services/google-calendar.service';
 
 @Component({
   selector: 'app-events',
@@ -17,46 +22,28 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   currentIndex = 0;
   slideshowIntervalId: ReturnType<typeof setInterval> | null = null;
-  imageEvents: CalendarEvent[] = [];
+  calendarEvents: CalendarEvent[] = [];
   eventsError = '';
   readonly calendarRoute: string;
+  readonly community: CalendarCommunity;
 
   constructor(
     private readonly googleCalendar: GoogleCalendarService,
     router: Router,
     @Inject(PLATFORM_ID) private readonly platformId: object
   ) {
-    const community = router.url.split('/').filter(Boolean)[0] || 'mya';
-    this.calendarRoute = `/${community}/calendar`;
+    this.community = getCalendarCommunity(router.url);
+    this.calendarRoute = `/${this.community}/calendar`;
   }
 
   async ngOnInit(): Promise<void> {
     if (isPlatformBrowser(this.platformId)) {
       try {
-        const events = await this.googleCalendar.listEvents();
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const upcomingImageEvents = events
-          .filter((event) =>
-            Boolean(event.imageUrl) &&
-            Boolean(event.start) &&
-            new Date(event.start).getTime() >= today.getTime()
-          )
-          .sort((first, second) => new Date(first.start).getTime() - new Date(second.start).getTime());
-        const eventSeries = new Map<string, CalendarEvent>();
-
-        upcomingImageEvents.forEach((event) => {
-          const key = event.recurringEventId || event.id || `${event.title}-${event.start}`;
-          if (!eventSeries.has(key)) {
-            eventSeries.set(key, event);
-          }
-        });
-
-        this.imageEvents = [...eventSeries.values()];
+        this.calendarEvents = await this.googleCalendar.listEvents(this.community, 'upcoming');
         this.startSlideshow();
       } catch (error) {
-        console.error('Could not load event images:', error);
-        this.eventsError = 'Event images could not be loaded. Please try again later.';
+        console.error('Could not load calendar events:', error);
+        this.eventsError = 'Calendar events could not be loaded. Please try again later.';
       }
     }
   }
@@ -77,21 +64,21 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   showPreviousEvent(): void {
-    if (this.imageEvents.length < 2) return;
-    this.currentIndex = (this.currentIndex - 1 + this.imageEvents.length) % this.imageEvents.length;
+    if (this.calendarEvents.length < 2) return;
+    this.currentIndex = (this.currentIndex - 1 + this.calendarEvents.length) % this.calendarEvents.length;
   }
 
   showNextEvent(): void {
-    if (this.imageEvents.length < 2) return;
-    this.currentIndex = (this.currentIndex + 1) % this.imageEvents.length;
+    if (this.calendarEvents.length < 2) return;
+    this.currentIndex = (this.currentIndex + 1) % this.calendarEvents.length;
   }
 
   startSlideshow(): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    if (!this.slideshowIntervalId && this.imageEvents.length > 1) {
+    if (!this.slideshowIntervalId && this.calendarEvents.length > 1) {
       this.slideshowIntervalId = setInterval(() => {
-        this.currentIndex = (this.currentIndex + 1) % this.imageEvents.length;
+        this.currentIndex = (this.currentIndex + 1) % this.calendarEvents.length;
       }, 8000);
     }
   }

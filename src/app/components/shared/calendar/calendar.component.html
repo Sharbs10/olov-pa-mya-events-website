@@ -11,6 +11,9 @@
         <span>Download</span>
       </button>
     </header>
+    @if (calendarError) {
+      <p class="calendar-error" role="alert">{{ calendarError }}</p>
+    }
     @if (calendarOptions) {
       <full-calendar
         class="full-calendar"
@@ -28,32 +31,45 @@
         aria-labelledby="event-dialog-title"
         (click)="$event.stopPropagation()"
       >
-        <button class="event-dialog-close" type="button" aria-label="Close event details" (click)="closeEventDetails()">
-          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-        </button>
-        <p class="calendar-eyebrow">Community event</p>
-        <h2 id="event-dialog-title">{{ event.title }}</h2>
-        @if (event.imageUrl) {
-          <a
-            class="event-dialog-image-link"
-            [routerLink]="eventsRoute"
-            [attr.aria-label]="'View ' + event.title + ' in Events'"
-          >
-            <img class="event-dialog-image" [src]="event.imageUrl" [alt]="event.title" />
-          </a>
-        }
-        @if (event.start) {
-          <p class="event-dialog-detail">
-            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
-            {{ event.start | date:'fullDate' }}<span *ngIf="event.end"> · {{ event.start | date:'shortTime' }}–{{ event.end | date:'shortTime' }}</span>
-          </p>
-        }
-        @if (event.location) {
-          <p class="event-dialog-detail"><i class="fa-solid fa-location-dot" aria-hidden="true"></i>{{ event.location }}</p>
-        }
-        @if (event.description) {
-          <p class="event-dialog-description">{{ event.description }}</p>
-        }
+        <header class="event-dialog-header">
+          <h2 id="event-dialog-title">{{ event.title }}</h2>
+          <button class="event-dialog-close" type="button" aria-label="Close event details" (click)="closeEventDetails()">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </header>
+        <div class="event-dialog-main">
+          @if (event.imageUrl) {
+            <a
+              class="event-dialog-image-link"
+              [routerLink]="eventsRoute"
+              [attr.aria-label]="'View ' + event.title + ' in Events'"
+            >
+              <img class="event-dialog-image" [src]="event.imageUrl" [alt]="event.title" />
+            </a>
+          }
+          <div class="event-dialog-details">
+            @if (event.start) {
+              <p class="event-dialog-detail">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                <span>
+                  {{ event.start | date:'fullDate' }}
+                  @if (!event.allDay) {
+                    <span> · {{ event.start | date:'shortTime' }}@if (event.end) { –{{ event.end | date:'shortTime' }} }</span>
+                  }
+                </span>
+              </p>
+            }
+            @if (event.location) {
+              <p class="event-dialog-detail"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>{{ event.location }}</span></p>
+            }
+            @if (event.description) {
+              <p class="event-dialog-description">
+                <span aria-hidden="true">📝</span>
+                <span>{{ event.description }}</span>
+              </p>
+            }
+          </div>
+        </div>
       </section>
     </div>
   }
