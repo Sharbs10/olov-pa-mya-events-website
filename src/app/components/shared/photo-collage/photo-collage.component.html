@@ -2,13 +2,14 @@
   @for (tile of tiles; track tile.src) {
     <div
       class="collage-tile"
+      [class.collage-tile-mobile-hidden]="!tile.mobileVisible"
       [class.collage-tile-small]="tile.size === 'small'"
       [class.collage-tile-medium]="tile.size === 'medium'"
       [class.collage-tile-large]="tile.size === 'large'"
       [style.--tile-x]="tile.x"
       [style.--tile-y]="tile.y"
-      [style.--mobile-tile-x]="tile.mobileX + '%'"
-      [style.--mobile-tile-y]="tile.mobileY + '%'"
+      [style.--mobile-tile-x]="tile.mobileX"
+      [style.--mobile-tile-y]="tile.mobileY"
       [style.z-index]="tile.layer"
     >
       <img class="collage-photo" [src]="tile.src" alt="" />

@@ -49,15 +49,19 @@
     top: var(--mobile-tile-y);
   }
 
+  .collage-tile-mobile-hidden {
+    display: none;
+  }
+
   .collage-tile-small {
-    width: min(7.5cqw, 5cqh);
+    width: min(25cqw, 16.9444cqh);
   }
 
   .collage-tile-medium {
-    width: min(13.3cqw, 8cqh);
+    width: min(45cqw, 30.5cqh);
   }
 
   .collage-tile-large {
-    width: min(21.7cqw, 13cqh);
+    width: min(90cqw, 61cqh);
   }
 }
