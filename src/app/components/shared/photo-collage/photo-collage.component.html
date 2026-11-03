@@ -1,20 +1,17 @@
 <div #collage class="photo-collage" aria-hidden="true">
-  @for (image of images; track $index) {
-    <img class="photo-source" [src]="image" alt="" />
-  }
-  @if (mosaic) {
-    <div class="mosaic-root" [style.width.px]="mosaicWidth" [style.height.px]="mosaicHeight">
-      @for (tile of tiles; track tile.src) {
-        <img
-          class="mosaic-photo"
-          [src]="tile.src"
-          alt=""
-          [style.left.%]="tile.x"
-          [style.top.%]="tile.y"
-          [style.width.%]="tile.width"
-          [style.height.%]="tile.height"
-        />
-      }
+  @for (tile of tiles; track tile.src) {
+    <div
+      class="collage-tile"
+      [class.collage-tile-small]="tile.size === 'small'"
+      [class.collage-tile-medium]="tile.size === 'medium'"
+      [class.collage-tile-large]="tile.size === 'large'"
+      [style.--tile-x]="tile.x"
+      [style.--tile-y]="tile.y"
+      [style.--mobile-tile-x]="tile.mobileX + '%'"
+      [style.--mobile-tile-y]="tile.mobileY + '%'"
+      [style.z-index]="tile.layer"
+    >
+      <img class="collage-photo" [src]="tile.src" alt="" />
     </div>
   }
 </div>

@@ -1,26 +1,63 @@
 .photo-collage {
   position: absolute;
   z-index: 0;
-  inset: 1% 1.5%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  inset: 0;
+  container-type: size;
+  background: #fff;
   overflow: hidden;
   pointer-events: none;
+  --large-medium-offset: calc(min(7.75cqw, 16.5cqh) + min(3.625cqw, 7.375cqh));
+  --large-small-offset: calc(min(7.75cqw, 16.5cqh) + min(2.375cqw, 5cqh));
 }
 
-.photo-source {
-  display: none !important;
-}
-
-.mosaic-root {
-  position: relative;
-  flex: 0 0 auto;
-  overflow: hidden;
-}
-
-.mosaic-photo {
+.collage-tile {
   position: absolute;
+  left: var(--tile-x);
+  top: var(--tile-y);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  background: #fff;
+}
+
+.collage-tile-small {
+  width: min(9.5cqw, 20cqh);
+}
+
+.collage-tile-medium {
+  width: min(14.5cqw, 29.5cqh);
+}
+
+.collage-tile-large {
+  width: min(31cqw, 66cqh);
+}
+
+.collage-photo {
+  position: absolute;
+  inset: 0;
   display: block;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  object-fit: cover;
+}
+
+@media (max-width: 600px) {
+  .collage-tile {
+    left: var(--mobile-tile-x);
+    top: var(--mobile-tile-y);
+  }
+
+  .collage-tile-small {
+    width: min(7.5cqw, 5cqh);
+  }
+
+  .collage-tile-medium {
+    width: min(13.3cqw, 8cqh);
+  }
+
+  .collage-tile-large {
+    width: min(21.7cqw, 13cqh);
+  }
 }

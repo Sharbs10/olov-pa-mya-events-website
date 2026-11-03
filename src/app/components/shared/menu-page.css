@@ -10,7 +10,7 @@
   flex-direction: column;
   justify-content: center;
   padding: clamp(1rem, 4vh, 3rem) clamp(1rem, 5vw, 2rem);
-  background: #fff;
+  background: rgba(255, 255, 255, 0.12);
   color: #17324f;
   text-align: center;
 }
@@ -116,7 +116,8 @@
   padding: clamp(1rem, 2.5vw, 1.5rem);
   border: 1px solid #d9e6f1;
   border-radius: 1.1rem;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(3px);
   box-shadow: 0 8px 24px rgba(21, 53, 91, 0.08);
   color: #17324f;
   text-decoration: none;
@@ -203,6 +204,43 @@
   min-height: 10.5rem;
   align-items: center;
   padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.hub-card.mcf-card {
+  --card-accent: #d6a900;
+}
+
+.hub-card.myo-card {
+  --card-accent: #29834a;
+}
+
+.hub-card.mya-card {
+  --card-accent: #8052a5;
+}
+
+.hub-card.mcf-card,
+.hub-card.myo-card,
+.hub-card.mya-card {
+  border: 2px solid var(--card-accent);
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(2px);
+}
+
+.hub-card.mcf-card:hover,
+.hub-card.myo-card:hover,
+.hub-card.mya-card:hover {
+  border-color: var(--card-accent);
+  background: rgba(255, 255, 255, 0.76);
+  color: #17324f;
+}
+
+.hub-card.mcf-card:hover .menu-card-description,
+.hub-card.myo-card:hover .menu-card-description,
+.hub-card.mya-card:hover .menu-card-description,
+.hub-card.mcf-card:hover .menu-card-arrow,
+.hub-card.myo-card:hover .menu-card-arrow,
+.hub-card.mya-card:hover .menu-card-arrow {
+  color: #667c91;
 }
 
 .hub-card .menu-card-icon {

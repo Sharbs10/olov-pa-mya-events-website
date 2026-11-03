@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { HeaderComponent } from '../shared/header/header.component';
 import { PhotoCollageComponent } from '../shared/photo-collage/photo-collage.component';
+import { MCF_COLLAGE_IMAGES } from '../shared/photo-collage/photo-collage-images';
 
 @Component({
   selector: 'app-mcf',
@@ -12,14 +13,5 @@ import { PhotoCollageComponent } from '../shared/photo-collage/photo-collage.com
   styleUrl: '../shared/menu-page.css'
 })
 export class McfComponent {
-  readonly backgroundImages = [
-    'assets/images/MCF_Choir.JPG',
-    'assets/images/MCF_Christmas.jpeg',
-    'assets/images/MCF_Crafts.jpeg',
-    'assets/images/MCF_Dabke.jpeg',
-    'assets/images/MCF_Dabke1.jpeg',
-    'assets/images/MCF_Dabke2.JPG',
-    'assets/images/MCF_Day_1.JPG',
-    'assets/images/MCF_Dima.jpeg'
-  ];
+  readonly backgroundImages = MCF_COLLAGE_IMAGES;
 }

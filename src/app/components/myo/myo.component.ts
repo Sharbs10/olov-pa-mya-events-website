@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { HeaderComponent } from '../shared/header/header.component';
 import { PhotoCollageComponent } from '../shared/photo-collage/photo-collage.component';
+import { MYO_COLLAGE_IMAGES } from '../shared/photo-collage/photo-collage-images';
 
 @Component({
   selector: 'app-myo',
@@ -12,5 +13,5 @@ import { PhotoCollageComponent } from '../shared/photo-collage/photo-collage.com
   styleUrl: '../shared/menu-page.css'
 })
 export class MyoComponent {
-  readonly backgroundImages = Array(8).fill('assets/images/MYO_Bowling.JPG');
+  readonly backgroundImages = MYO_COLLAGE_IMAGES;
 }

@@ -2,15 +2,72 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.2.
 
-## Development server
+## Run the development server
 
-To start a local development server, run:
+### Prerequisites
 
-```bash
-ng serve
+Install **Node.js LTS** (which includes npm) and **Git**:
+
+- [Download Node.js](https://nodejs.org/)
+- [Download Git](https://git-scm.com/downloads)
+
+After installing, open a terminal and check that both are available:
+
+```text
+node --version
+npm --version
+git --version
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### macOS
+
+1. Open **Terminal**.
+2. Clone the project and go into its folder (if you already have the project, just `cd` to that folder):
+
+   ```bash
+   git clone https://github.com/Sharbs10/olov-pa-mya-events-website.git
+   cd olov-pa-mya-events-website
+   ```
+
+3. Install the project dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Start the Angular development server:
+
+   ```bash
+   npx ng serve
+   ```
+
+5. Open [http://localhost:4200](http://localhost:4200) in your browser. Leave Terminal running while you use the site. Press **Control+C** in Terminal to stop the server.
+
+### Windows
+
+1. Open **PowerShell** (or **Windows Terminal**).
+2. Clone the project and go into its folder (if you already have the project, just `cd` to that folder):
+
+   ```powershell
+   git clone https://github.com/Sharbs10/olov-pa-mya-events-website.git
+   cd olov-pa-mya-events-website
+   ```
+
+3. Install the project dependencies:
+
+   ```powershell
+   npm install
+   ```
+
+4. Start the Angular development server:
+
+   ```powershell
+   npx ng serve
+   ```
+
+5. Open [http://localhost:4200](http://localhost:4200) in your browser. Leave PowerShell running while you use the site. Press **Ctrl+C** in PowerShell to stop the server.
+
+The server automatically reloads when you modify source files. The first dependency installation may take a few minutes.
 
 ## Code scaffolding
 
