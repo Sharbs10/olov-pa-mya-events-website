@@ -222,15 +222,16 @@
 .hub-card.myo-card,
 .hub-card.mya-card {
   border: 2px solid var(--card-accent);
-  background: rgba(255, 255, 255, 0.58);
-  backdrop-filter: blur(2px);
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(1px);
 }
 
 .hub-card.mcf-card:hover,
 .hub-card.myo-card:hover,
 .hub-card.mya-card:hover {
   border-color: var(--card-accent);
-  background: rgba(255, 255, 255, 0.76);
+  background: rgba(255, 255, 255, 0.48);
   color: #17324f;
 }
 
@@ -249,6 +250,10 @@
   flex-basis: 4rem;
   border-radius: 1.2rem;
   font-size: 1.5rem;
+}
+
+.hub-card .menu-card-title {
+  align-self: center;
 }
 
 .hub-card .menu-card-title {
