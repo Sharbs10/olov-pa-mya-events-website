@@ -1,0 +1,59 @@
+<app-header></app-header>
+<main class="photo-book-page">
+  <section class="photo-book-content" aria-labelledby="photo-book-title">
+    <header class="photo-book-heading">
+      <p class="eyebrow">Our community in pictures</p>
+      <h1 id="photo-book-title">Photo Book</h1>
+      <p>Browse {{ filteredPhotos.length }} photos. Select a photo to view and download it.</p>
+    </header>
+
+    <nav class="photo-filters" aria-label="Filter photos by community">
+      @for (category of categories; track category) {
+        <button
+          type="button"
+          [class.active]="selectedCategory === category"
+          [attr.aria-pressed]="selectedCategory === category"
+          (click)="selectCategory(category)">
+          {{ category }}
+        </button>
+      }
+    </nav>
+
+    <ul class="photo-grid" [attr.aria-label]="selectedCategory + ' photos'">
+      @for (photo of filteredPhotos; track photo.filename) {
+        <li>
+          <button
+            class="photo-card"
+            type="button"
+            [attr.aria-label]="getAccessiblePhotoLabel(photo)"
+            (click)="openPhoto(photo)">
+            <img [src]="photo.src" [alt]="getAccessiblePhotoDescription(photo)" loading="lazy" decoding="async">
+          </button>
+        </li>
+      }
+    </ul>
+  </section>
+</main>
+<app-footer></app-footer>
+
+@if (selectedPhoto; as photo) {
+  <div class="photo-viewer-backdrop" (click)="handleBackdropClick($event)">
+    <section
+      class="photo-viewer"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="photo-viewer-title"
+      tabindex="-1"
+      (keydown)="handleViewerKeydown($event)">
+      <h2 id="photo-viewer-title" class="visually-hidden">{{ getAccessiblePhotoDescription(photo) }}</h2>
+      <button #viewerClose class="viewer-close" type="button" aria-label="Close photo" (click)="closePhoto()">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <img class="viewer-image" [src]="photo.src" [alt]="getAccessiblePhotoDescription(photo)">
+      <a class="viewer-download" [href]="photo.src" [attr.download]="photo.filename">
+        <i class="fa-solid fa-download" aria-hidden="true"></i>
+        <span>Download photo</span>
+      </a>
+    </section>
+  </div>
+}

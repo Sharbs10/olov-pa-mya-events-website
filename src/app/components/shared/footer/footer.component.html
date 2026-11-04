@@ -7,14 +7,19 @@
     </span>
   </div>
   <nav class="footer-links" aria-label="Connect with us">
+    <a routerLink="/photobook" aria-label="Open the photo book">
+      <i class="fa-solid fa-images" aria-hidden="true"></i>
+    </a>
     <a href="mailto:sharbel.sadaka@wwwolov-mya-pitt-events.com" aria-label="Email Our Lady of Victory">
       <i class="fa-solid fa-envelope" aria-hidden="true"></i>
     </a>
-    <a href="https://linktr.ee/mya.pittsburghpa" target="_blank" rel="noopener noreferrer" aria-label="Our Linktree">
-      <i class="fa-solid fa-link" aria-hidden="true"></i>
-    </a>
-    <a href="https://www.instagram.com/mya.pittsburghpa/" target="_blank" rel="noopener noreferrer" aria-label="Our Instagram">
-      <i class="fa-brands fa-instagram" aria-hidden="true"></i>
-    </a>
+    @if (isMyaPage) {
+      <a href="https://linktr.ee/mya.pittsburghpa" target="_blank" rel="noopener noreferrer" aria-label="MYA Linktree">
+        <i class="fa-solid fa-link" aria-hidden="true"></i>
+      </a>
+      <a href="https://www.instagram.com/mya.pittsburghpa/" target="_blank" rel="noopener noreferrer" aria-label="MYA Instagram">
+        <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+      </a>
+    }
   </nav>
 </footer>
