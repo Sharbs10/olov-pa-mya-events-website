@@ -9,16 +9,29 @@ import { CalendarComponent } from './components/shared/calendar/calendar.compone
 import { ResourcesComponent } from './components/shared/resources/resources.component';
 import { DailyVideoComponent } from './components/mcf/daily-video/daily-video.component';
 import { QuizletComponent } from './components/mcf/quizlet/quizlet.component';
+import { McfBooksComponent } from './components/mcf/books/mcf-books.component';
+import { McfBookChapterComponent } from './components/mcf/books/mcf-book-chapter.component';
 import { SpiritualComponent } from './components/mya/spiritual/spiritual.component';
 import { ServiceComponent } from './components/mya/service/service.component';
 import { SocialComponent } from './components/mya/social/social.component';
+import { DevAccessComponent } from './components/dev/dev-access/dev-access.component';
+import { devAccessGuard } from './services/dev-access.guard';
 
 export const routes: Routes = [
+  { path: 'dev', component: DevAccessComponent },
+  {
+    path: 'dev/pdf',
+    canActivate: [devAccessGuard],
+    loadComponent: () => import('./components/dev/pdf-merge/pdf-merge.component')
+      .then(component => component.PdfMergeComponent)
+  },
   { path: '', component: OlovHubComponent },
   { path: 'mcf', component: McfComponent },
   { path: 'mcf/about-us', component: AboutUsComponent },
   { path: 'mcf/daily-video', component: DailyVideoComponent },
   { path: 'mcf/quizlet', component: QuizletComponent },
+  { path: 'mcf/books', component: McfBooksComponent },
+  { path: 'mcf/books/:chapter', component: McfBookChapterComponent },
   { path: 'mcf/events', component: EventsComponent },
   { path: 'mcf/calendar', component: CalendarComponent },
   { path: 'mcf/resources', component: ResourcesComponent },

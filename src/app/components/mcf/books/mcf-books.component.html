@@ -1,0 +1,18 @@
+<app-header></app-header>
+<main class="books-page">
+  <section class="books-panel" aria-labelledby="books-title">
+    <p class="eyebrow">MCF Resources</p>
+    <h1 id="books-title">MCF Books</h1>
+    <p>Select a chapter to read it or download the PDF.</p>
+
+    <nav class="chapter-grid" aria-label="Book chapters">
+      @for (chapter of chapters; track chapter) {
+        <a [routerLink]="['/mcf/books', 'ch' + chapter]">
+          <span class="chapter-label">CH</span>
+          <span class="chapter-number">{{ chapter }}</span>
+        </a>
+      }
+    </nav>
+  </section>
+</main>
+<app-footer></app-footer>

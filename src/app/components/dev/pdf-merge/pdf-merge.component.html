@@ -1,0 +1,72 @@
+<main class="pdf-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Dev tools</p>
+      <h1>PDF merger</h1>
+      <p>Choose PDFs in the order they should appear. The numbered list is the merge order.</p>
+    </div>
+    <button class="logout-button" type="button" (click)="logOut()">Lock dev area</button>
+  </header>
+
+  <section class="merge-panel" aria-label="PDF merge order">
+    <ol class="pdf-list">
+      @for (slot of slots; track slot.id; let index = $index) {
+        <li class="pdf-slot">
+          <span class="slot-number" aria-hidden="true">{{ index + 1 }}</span>
+          <div class="slot-content">
+            <label [for]="'pdf-' + slot.id">PDF {{ index + 1 }}</label>
+            <input
+              [id]="'pdf-' + slot.id"
+              type="file"
+              accept="application/pdf,.pdf"
+              (change)="selectPdf(slot, $event)">
+            @if (slot.file) {
+              <span class="file-name">{{ slot.file.name }}</span>
+            } @else {
+              <span class="file-hint">Choose a PDF for this position.</span>
+            }
+          </div>
+          <div class="slot-actions" [attr.aria-label]="'Reorder PDF ' + (index + 1)">
+            <button type="button" [disabled]="index === 0" (click)="moveSlot(index, -1)" aria-label="Move up">↑</button>
+            <button type="button" [disabled]="index === slots.length - 1" (click)="moveSlot(index, 1)" aria-label="Move down">↓</button>
+            @if (slots.length > 2) {
+              <button type="button" class="remove-button" (click)="removeSlot(index)" [attr.aria-label]="'Remove PDF ' + (index + 1)">×</button>
+            }
+          </div>
+        </li>
+      }
+    </ol>
+
+    <p class="selection-count">{{ selectedCount }} of {{ slots.length }} PDFs selected</p>
+    <label class="filename-field" for="output-filename">
+      Merged file name
+      <span class="filename-input-wrap">
+        <input
+          id="output-filename"
+          type="text"
+          [(ngModel)]="outputFileName"
+          autocomplete="off"
+          placeholder="merged-document">
+        <span aria-hidden="true">.pdf</span>
+      </span>
+    </label>
+    @if (errorMessage) {
+      <p class="error-message" role="alert">{{ errorMessage }}</p>
+    }
+
+    <div class="primary-actions">
+      <button class="add-button" type="button" (click)="addPdf()">+ Add another PDF</button>
+      <button class="merge-button" type="button" [disabled]="!canMerge" (click)="mergePdfs()">
+        {{ isMerging ? 'Merging PDFs…' : 'Merge PDFs' }}
+      </button>
+    </div>
+
+    @if (downloadUrl) {
+      <a class="download-link" [href]="downloadUrl" [download]="downloadFileName">
+        Download merged PDF
+      </a>
+    }
+  </section>
+
+  <p class="privacy-note">Files are merged in your browser and are not uploaded to a server.</p>
+</main>

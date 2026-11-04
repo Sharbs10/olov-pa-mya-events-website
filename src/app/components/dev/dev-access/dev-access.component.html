@@ -1,0 +1,39 @@
+<main class="dev-gate">
+  <section class="gate-card" aria-labelledby="gate-title">
+    <span class="gate-icon" aria-hidden="true">?</span>
+    <p class="eyebrow">A private little corner</p>
+    <h1 id="gate-title">Answer the bridge keeper</h1>
+    <p class="intro">Three questions stand between you and the other side.</p>
+    <p class="security-note" role="note">
+      This is a client-side gate, not strong security: its answers are included in the published site code.
+      Do not use sensitive answers here.
+    </p>
+
+    @if (!access.isConfigured) {
+      <p class="setup-notice" role="status">
+        Set all three prompts and accepted answers in
+        <code>src/app/services/dev-access.config.ts</code> to enable this gate.
+      </p>
+    }
+
+    <form (ngSubmit)="submitAnswers()">
+      @for (question of questions; track $index) {
+        <label class="answer-field">
+          <span>{{ question.prompt || 'Personal question ' + ($index + 1) }}</span>
+          <input
+            type="password"
+            [name]="'answer-' + $index"
+            [(ngModel)]="answers[$index]"
+            autocomplete="off"
+            [disabled]="!access.isConfigured"
+            required>
+        </label>
+      }
+
+      @if (errorMessage) {
+        <p class="error-message" role="alert">{{ errorMessage }}</p>
+      }
+      <button type="submit" [disabled]="!access.isConfigured">Cross the bridge</button>
+    </form>
+  </section>
+</main>

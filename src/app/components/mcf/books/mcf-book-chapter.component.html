@@ -1,0 +1,38 @@
+<app-header></app-header>
+<main class="chapter-page">
+  @if (chapterNumber) {
+    <header class="chapter-header">
+      <div>
+        <a class="back-link" routerLink="/mcf/books">← All chapters</a>
+        <h1>MCF Books — CH{{ chapterNumber }}</h1>
+      </div>
+      <a class="download-button" [href]="pdfPath" [attr.download]="'ch' + chapterNumber + '.pdf'">
+        Download PDF
+      </a>
+    </header>
+
+    @if (pdfMissing) {
+      <section class="missing-message" role="status">
+        <h2>Chapter PDF not found</h2>
+        <p>
+          Add the chapter file at
+          <code>public/assets/mcf/books/ch{{ chapterNumber }}.pdf</code>
+          to display and download it here.
+        </p>
+      </section>
+    } @else {
+      <iframe
+        class="pdf-viewer"
+        [src]="pdfUrl"
+        [title]="'MCF book chapter ' + chapterNumber + ' PDF'">
+      </iframe>
+    }
+  } @else {
+    <section class="missing-message" role="alert">
+      <h1>Chapter not found</h1>
+      <p>Choose a chapter from the MCF Books page.</p>
+      <a routerLink="/mcf/books">Browse chapters</a>
+    </section>
+  }
+</main>
+<app-footer></app-footer>
