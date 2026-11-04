@@ -18,6 +18,11 @@
   transform: translate(-50%, -50%);
   clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
   background: #fff;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.collage-tile-fading {
+  opacity: 0;
 }
 
 .collage-tile-small {
@@ -63,5 +68,11 @@
 
   .collage-tile-large {
     width: min(90cqw, 61cqh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collage-tile {
+    transition: none;
   }
 }

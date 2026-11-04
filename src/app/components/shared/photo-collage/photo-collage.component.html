@@ -1,11 +1,12 @@
 <div #collage class="photo-collage" aria-hidden="true">
-  @for (tile of tiles; track tile.src) {
+  @for (tile of tiles; track $index) {
     <div
       class="collage-tile"
       [class.collage-tile-mobile-hidden]="!tile.mobileVisible"
       [class.collage-tile-small]="tile.size === 'small'"
       [class.collage-tile-medium]="tile.size === 'medium'"
       [class.collage-tile-large]="tile.size === 'large'"
+      [class.collage-tile-fading]="tile.isFading"
       [style.--tile-x]="tile.x"
       [style.--tile-y]="tile.y"
       [style.--mobile-tile-x]="tile.mobileX"
