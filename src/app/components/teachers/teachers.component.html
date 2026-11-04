@@ -1,0 +1,119 @@
+<app-header></app-header>
+<main class="teachers-content">
+  @if (!isAuthenticated) {
+    <section class="gate-card" aria-labelledby="teachers-title">
+      <span class="gate-icon" aria-hidden="true"><i class="fa-solid fa-chalkboard-user"></i></span>
+      <p class="eyebrow">Teacher access</p>
+      <h1 id="teachers-title">Welcome, teachers</h1>
+      <p class="intro">Enter your first name to open the shared calendars, lesson materials, and links.</p>
+      <p class="security-note" role="note">
+        This name check is a convenience only. The page and files are not securely restricted.
+      </p>
+
+      <form (ngSubmit)="submitName()">
+        <label for="teacher-name">Your first name</label>
+        <input
+          id="teacher-name"
+          name="teacherName"
+          type="text"
+          [(ngModel)]="teacherName"
+          autocomplete="off"
+          autocapitalize="words"
+          spellcheck="false"
+          required
+          [attr.aria-invalid]="errorMessage ? 'true' : null"
+          [attr.aria-describedby]="errorMessage ? 'name-error' : null">
+
+        @if (errorMessage) {
+          <p id="name-error" class="error-message" role="alert">{{ errorMessage }}</p>
+        }
+
+        <button type="submit">View teacher resources</button>
+      </form>
+    </section>
+  } @else {
+    <div class="resources-page">
+      <header class="page-heading">
+        <div>
+          <p class="eyebrow">Shared materials</p>
+          <h1 id="resources-title">Teacher resources</h1>
+          <p>Download a file or open a link. Downloads are saved to your device.</p>
+        </div>
+        <button class="lock-button" type="button" (click)="lockResources()">Lock resources</button>
+      </header>
+
+      <section class="resource-section" aria-labelledby="calendar-title">
+        <h2 id="calendar-title"><i class="fa-regular fa-calendar" aria-hidden="true"></i> Calendars</h2>
+        <ul class="resource-list">
+          @for (resource of calendars; track resource.filename) {
+            <li>
+              <a [href]="'/assets/teachers/' + resource.filename" [attr.download]="resource.filename">
+                <span class="resource-icon" aria-hidden="true"><i class="fa-regular fa-calendar"></i></span>
+                <span class="resource-copy">
+                  <strong>{{ resource.title }}</strong>
+                  <span>{{ resource.fileType }} · Download</span>
+                </span>
+                <i class="fa-solid fa-download resource-action" aria-hidden="true"></i>
+              </a>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section class="resource-section" aria-labelledby="lesson-title">
+        <h2 id="lesson-title"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Lesson materials</h2>
+        <ul class="resource-list">
+          @for (resource of lessonMaterials; track resource.filename) {
+            <li>
+              <a [href]="'/assets/teachers/' + resource.filename" [attr.download]="resource.filename">
+                <span class="resource-icon" aria-hidden="true"><i class="fa-solid fa-file-lines"></i></span>
+                <span class="resource-copy">
+                  <strong>{{ resource.title }}</strong>
+                  <span>{{ resource.fileType }} · Download</span>
+                </span>
+                <i class="fa-solid fa-download resource-action" aria-hidden="true"></i>
+              </a>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section class="resource-section" aria-labelledby="links-title">
+        <h2 id="links-title"><i class="fa-solid fa-link" aria-hidden="true"></i> Important links</h2>
+        <ul class="resource-list">
+          <li>
+            <a href="https://drive.google.com/drive/folders/1BXWM5WENm2gLECBlotQ6PwgKsReAOIuj"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="Dabke Videos (opens Google Drive in a new tab)">
+              <span class="resource-icon" aria-hidden="true"><i class="fa-brands fa-google-drive"></i></span>
+              <span class="resource-copy">
+                <strong>Dabke Videos</strong>
+                <span>Open the shared video folder in Google Drive</span>
+              </span>
+              <i class="fa-solid fa-arrow-up-right-from-square resource-action" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="resource-section" aria-labelledby="directory-title">
+        <h2 id="directory-title"><i class="fa-solid fa-address-book" aria-hidden="true"></i> Teacher directory</h2>
+        <ul class="resource-list">
+          <li>
+            <a [href]="'/assets/teachers/' + teacherDirectory.filename"
+               [attr.download]="teacherDirectory.filename">
+              <span class="resource-icon" aria-hidden="true"><i class="fa-solid fa-file-excel"></i></span>
+              <span class="resource-copy">
+                <strong>{{ teacherDirectory.title }}</strong>
+                <span>{{ teacherDirectory.fileType }} · Download</span>
+              </span>
+              <i class="fa-solid fa-download resource-action" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+      </section>
+    </div>
+  }
+</main>
+<app-footer></app-footer>

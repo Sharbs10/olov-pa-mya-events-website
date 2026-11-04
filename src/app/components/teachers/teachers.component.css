@@ -1,0 +1,281 @@
+:host main.teachers-content {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: clamp(1.25rem, 4vw, 3rem) clamp(1rem, 5vw, 2rem);
+  background: linear-gradient(160deg, #eaf4fd, #fff 60%);
+  color: #17324f;
+}
+
+.gate-card {
+  width: min(100%, 30rem);
+  align-self: center;
+  margin: auto;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  border: 1px solid #d5e4f1;
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow: 0 1rem 2.5rem rgba(21, 53, 91, 0.12);
+}
+
+.gate-icon {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border-radius: 0.9rem;
+  background: #e2f1ff;
+  color: #205a8f;
+  font-size: 1.25rem;
+}
+
+.eyebrow {
+  margin: 1.25rem 0 0.35rem;
+  color: #356b96;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  color: #15355b;
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+  font-weight: 800;
+}
+
+.intro {
+  margin: 0.6rem 0 1.25rem;
+  color: #526b83;
+  line-height: 1.55;
+}
+
+.security-note,
+.error-message {
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.65rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.security-note {
+  border: 1px solid #e4d3a9;
+  background: #fff9e9;
+  color: #59491f;
+}
+
+form {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+}
+
+label {
+  color: #17324f;
+  font-weight: 700;
+}
+
+input {
+  width: 100%;
+  min-height: 3rem;
+  box-sizing: border-box;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid #8096aa;
+  border-radius: 0.6rem;
+  background: #fff;
+  color: #17324f;
+  font: inherit;
+}
+
+input:focus-visible,
+button:focus-visible,
+.resource-list a:focus-visible {
+  outline: 3px solid #2478bd;
+  outline-offset: 3px;
+}
+
+.error-message {
+  margin: 0.2rem 0;
+  background: #fff0ef;
+  color: #8b2520;
+}
+
+button {
+  min-height: 2.9rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid #153f69;
+  border-radius: 0.65rem;
+  background: #153f69;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 750;
+}
+
+button:hover {
+  background: #0e3154;
+}
+
+.resources-page {
+  width: min(100%, 62rem);
+  margin: 0 auto;
+  padding: 0.5rem 0 2rem;
+}
+
+.page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.page-heading .eyebrow {
+  margin-top: 0;
+}
+
+.page-heading p:last-child {
+  margin: 0.5rem 0 0;
+  color: #526b83;
+  line-height: 1.5;
+}
+
+.lock-button {
+  flex: 0 0 auto;
+  border-color: #9db2c5;
+  background: #fff;
+  color: #17324f;
+}
+
+.lock-button:hover {
+  background: #edf5fb;
+}
+
+.resource-section {
+  margin-top: 1.5rem;
+}
+
+.resource-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.75rem;
+  color: #15355b;
+  font-size: 1.2rem;
+}
+
+.resource-section h2 > i {
+  color: #356b96;
+  font-size: 1rem;
+}
+
+.resource-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resource-list a {
+  display: flex;
+  min-width: 0;
+  min-height: 4.8rem;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem;
+  border: 1px solid #d5e4f1;
+  border-radius: 0.85rem;
+  background: #fff;
+  color: #17324f;
+  text-align: left;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.resource-icon {
+  display: grid;
+  width: 2.65rem;
+  height: 2.65rem;
+  flex: 0 0 2.65rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: #e2f1ff;
+  color: #205a8f;
+}
+
+.resource-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.resource-copy strong {
+  line-height: 1.35;
+}
+
+.resource-copy > span {
+  color: #526b83;
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.resource-action {
+  flex: 0 0 auto;
+  color: #356b96;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .resource-list a:hover {
+    border-color: #28639b;
+    background: #28639b;
+    color: #fff;
+  }
+
+  .resource-list a:hover .resource-icon {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+  }
+
+  .resource-list a:hover .resource-copy > span,
+  .resource-list a:hover .resource-action {
+    color: #fff;
+  }
+}
+
+@media (max-width: 600px) {
+  :host main.teachers-content {
+    padding: 1.25rem 1rem;
+  }
+
+  .page-heading {
+    align-items: flex-start;
+  }
+
+  .resource-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  .page-heading {
+    flex-direction: column;
+  }
+
+  .lock-button {
+    align-self: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resource-list a {
+    transition: none;
+  }
+}

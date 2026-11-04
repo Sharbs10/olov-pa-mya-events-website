@@ -16,8 +16,10 @@ import { ServiceComponent } from './components/mya/service/service.component';
 import { SocialComponent } from './components/mya/social/social.component';
 import { DevAccessComponent } from './components/dev/dev-access/dev-access.component';
 import { devAccessGuard } from './services/dev-access.guard';
+import { TeachersComponent } from './components/teachers/teachers.component';
 
 export const routes: Routes = [
+  { path: 'teachers', component: TeachersComponent },
   { path: 'dev', component: DevAccessComponent },
   {
     path: 'dev/pdf',
