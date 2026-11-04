@@ -1,0 +1,32 @@
+<app-header></app-header>
+<main class="quizlet-page">
+  <section class="quizlet-panel" aria-labelledby="quizlet-title">
+    <p class="eyebrow">MCF Resources</p>
+    <h1 id="quizlet-title">Quizlet</h1>
+    <p>Select a grade to explore its Quizlet study sets.</p>
+
+    <nav class="grade-grid" aria-label="Quizlet study sets by grade">
+      @for (grade of grades; track grade.number) {
+        @if (grade.url) {
+          <a
+            [href]="grade.url"
+            [class]="'grade-color-' + grade.number"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="'Grade ' + grade.number + ': ' + grade.title + ' — opens Quizlet in a new tab'">
+            <span class="grade-number">Grade {{ grade.number }}</span>
+            <span class="grade-title">{{ grade.title }}</span>
+            <span class="grade-status">Open Quizlet</span>
+          </a>
+        } @else {
+          <div [class]="'grade-color-' + grade.number" aria-label="Quizlet study sets coming soon">
+            <span class="grade-number">Grade {{ grade.number }}</span>
+            <span class="grade-title">{{ grade.title }}</span>
+            <span class="grade-status">Coming soon</span>
+          </div>
+        }
+      }
+    </nav>
+  </section>
+</main>
+<app-footer></app-footer>

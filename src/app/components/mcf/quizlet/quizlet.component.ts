@@ -6,7 +6,18 @@ import { HeaderComponent } from '../../shared/header/header.component';
   selector: 'app-quizlet',
   standalone: true,
   imports: [HeaderComponent, FooterComponent],
-  template: '<app-header></app-header><main class="placeholder"><h1>Quizlet</h1><p>Quizlet study sets will be available here soon.</p></main><app-footer></app-footer>',
-  styles: ['.placeholder { min-height: calc(100vh - 140px); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; background: linear-gradient(to bottom, #a6d0fa, #fff); text-align: center; }']
+  templateUrl: './quizlet.component.html',
+  styleUrl: './quizlet.component.css'
 })
-export class QuizletComponent {}
+export class QuizletComponent {
+  readonly grades = [
+    { number: 1, title: 'GOD IS LOVE' },
+    { number: 2, title: 'JESUS' },
+    { number: 3, title: 'THE CHURCH' },
+    { number: 4, title: 'FOLLOWING JESUS' },
+    { number: 5, title: "THE CHURCH'S LITURGY" },
+    { number: 6, title: 'THE BIBLE', url: 'https://quizlet.com/user/Sharbel_Sadaka/folders/the-bible' },
+    { number: 7, title: 'OUR MARONITE FAITH' },
+    { number: 8, title: 'OUR MARONITE CHURCH HISTORY' }
+  ];
+}

@@ -17,9 +17,37 @@
     @if (calendarOptions) {
       <full-calendar
         class="full-calendar"
+        [class.mobile-week-active]="showMobileWeek"
         #calendar
         [options]="calendarOptions"
       ></full-calendar>
+    }
+    @if (showMobileWeek) {
+      <section class="mobile-week-view" aria-label="Events for this week">
+        @for (day of mobileWeekDays; track day.date.getTime()) {
+          <div class="mobile-week-row">
+            <time class="mobile-week-date" [attr.datetime]="day.date | date:'yyyy-MM-dd'" [attr.aria-label]="day.date | date:'fullDate'">
+              <span>{{ day.date | date:'EEE' | uppercase }}</span>
+              <span>{{ day.date | date:'M/d' }}</span>
+            </time>
+            <div class="mobile-week-events">
+              @for (event of day.events; track event.id || event.title + event.start) {
+                <button class="mobile-week-event" type="button" (click)="openWeekEvent(event)">
+                  @if (event.start.includes('T')) {
+                    <time>{{ event.start | date:'shortTime' }}</time>
+                  }
+                  <span>{{ event.title }}</span>
+                  @if (event.location) {
+                    <span class="mobile-week-location">{{ event.location }}</span>
+                  }
+                </button>
+              } @empty {
+                <span class="visually-hidden">No events</span>
+              }
+            </div>
+          </div>
+        }
+      </section>
     }
   </section>
   @if (selectedEvent; as event) {

@@ -1,8 +1,8 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { AfterViewInit, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, NgZone, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, EventClickArg, EventContentArg } from '@fullcalendar/core';
+import { CalendarOptions, DatesSetArg, EventClickArg, EventContentArg } from '@fullcalendar/core';
 import {
   CalendarEvent,
   CalendarCommunity,
@@ -23,6 +23,11 @@ interface CalendarEventDetails {
   imageUrl: string;
 }
 
+interface CalendarWeekDay {
+  date: Date;
+  events: CalendarEvent[];
+}
+
 @Component({
   selector: 'app-calendar',
   standalone: true,
@@ -38,12 +43,16 @@ export class CalendarComponent implements OnInit, AfterViewInit, OnDestroy {
   isBrowser = false;
   calendarError = '';
   selectedEvent: CalendarEventDetails | null = null;
+  mobileWeekDays: CalendarWeekDay[] = [];
+  isMobileViewport = false;
+  currentViewType = '';
   readonly eventsRoute: string;
   readonly community: CalendarCommunity;
   private readonly handleResize = () => this.adjustCalendarForScreen();
 
   constructor(
     private readonly gCal: GoogleCalendarService,
+    private readonly ngZone: NgZone,
     @Inject(PLATFORM_ID) private readonly platformId: object,
     router: Router
   ) {
@@ -54,6 +63,7 @@ export class CalendarComponent implements OnInit, AfterViewInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     this.isBrowser = isPlatformBrowser(this.platformId);
     if (!this.isBrowser) return;
+    this.isMobileViewport = window.matchMedia('(max-width: 620px)').matches;
 
     try {
       const plugins = await this.loadCalendarPlugins();
@@ -83,9 +93,11 @@ export class CalendarComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         buttonText: {
           dayGridWeek: 'Week',
+          listWeek: 'Week',
           dayGridMonth: 'Month'
         },
         events: this.events,
+        datesSet: (arg) => this.handleDatesSet(arg),
         eventContent: (eventInfo) => this.renderEventContent(eventInfo),
         eventClick: (eventInfo) => this.handleEventClick(eventInfo)
       };
@@ -107,12 +119,13 @@ export class CalendarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private async loadCalendarPlugins() {
-    const [dayGridPlugin, interactionPlugin] = await Promise.all([
+    const [dayGridPlugin, interactionPlugin, listPlugin] = await Promise.all([
       import('@fullcalendar/daygrid').then(module => module.default),
-      import('@fullcalendar/interaction').then(module => module.default)
+      import('@fullcalendar/interaction').then(module => module.default),
+      import('@fullcalendar/list').then(module => module.default)
     ]);
 
-    return [dayGridPlugin, interactionPlugin];
+    return [dayGridPlugin, interactionPlugin, listPlugin];
   }
 
   private async loadEvents(): Promise<void> {
@@ -128,10 +141,18 @@ export class CalendarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private adjustCalendarForScreen(): void {
-    if (!this.isBrowser || !this.calendarComponent) return;
+    if (!this.isBrowser) return;
+    this.isMobileViewport = window.matchMedia('(max-width: 620px)').matches;
+    if (!this.calendarComponent) return;
 
     const calendarApi = this.calendarComponent.getApi();
+    const currentView = calendarApi.view.type;
+    const weekView = this.getWeekViewForScreen();
+
     calendarApi.setOption('headerToolbar', this.getHeaderToolbar());
+    if (currentView === 'dayGridWeek' || currentView === 'listWeek') {
+      if (currentView !== weekView) calendarApi.changeView(weekView);
+    }
     calendarApi.updateSize();
   }
 
@@ -139,7 +160,70 @@ export class CalendarComponent implements OnInit, AfterViewInit, OnDestroy {
     return {
       left: 'prev,next',
       center: 'title',
-      right: 'todayView,dayGridWeek,dayGridMonth'
+      right: `todayView,${this.getWeekViewForScreen()},dayGridMonth`
+    };
+  }
+
+  private getWeekViewForScreen(): 'listWeek' | 'dayGridWeek' {
+    return typeof window !== 'undefined' && window.matchMedia('(max-width: 620px)').matches
+      ? 'listWeek'
+      : 'dayGridWeek';
+  }
+
+  get showMobileWeek(): boolean {
+    return this.isMobileViewport && this.currentViewType === 'listWeek';
+  }
+
+  private handleDatesSet(arg: DatesSetArg): void {
+    this.ngZone.run(() => {
+      this.currentViewType = arg.view.type;
+      if (arg.view.type !== 'listWeek') {
+        this.mobileWeekDays = [];
+        return;
+      }
+
+      this.mobileWeekDays = [];
+      const date = new Date(arg.start);
+      while (date < arg.end) {
+        const dayStart = new Date(date);
+        dayStart.setHours(0, 0, 0, 0);
+        const dayEnd = new Date(dayStart);
+        dayEnd.setDate(dayEnd.getDate() + 1);
+        const events = this.events
+          .filter(event => this.eventOverlapsDay(event, dayStart, dayEnd))
+          .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+        this.mobileWeekDays.push({ date: dayStart, events });
+        date.setDate(date.getDate() + 1);
+      }
+    });
+  }
+
+  private eventOverlapsDay(event: CalendarEvent, dayStart: Date, dayEnd: Date): boolean {
+    const start = this.parseEventDate(event.start);
+    if (!start) return false;
+    const end = this.parseEventDate(event.end);
+
+    return start < dayEnd && (end ? end > dayStart : start >= dayStart);
+  }
+
+  private parseEventDate(value: string): Date | null {
+    if (!value) return null;
+    const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+    const date = dateOnly
+      ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+      : new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  openWeekEvent(event: CalendarEvent): void {
+    this.selectedEvent = {
+      title: event.title,
+      start: this.parseEventDate(event.start),
+      end: this.parseEventDate(event.end),
+      allDay: !event.start.includes('T'),
+      description: event.description || '',
+      location: event.location || '',
+      imageUrl: event.imageUrl || ''
     };
   }
 

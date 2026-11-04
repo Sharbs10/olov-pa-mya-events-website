@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { HeaderComponent } from '../../shared/header/header.component';
+import { GOSPEL_STORIES } from './gospel-stories.data';
 
 @Component({
   selector: 'app-daily-video',
   standalone: true,
   imports: [HeaderComponent, FooterComponent],
-  template: '<app-header></app-header><main class="placeholder"><h1>Daily Video</h1><p>Daily videos will be available here soon.</p></main><app-footer></app-footer>',
-  styles: ['.placeholder { min-height: calc(100vh - 140px); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; background: linear-gradient(to bottom, #a6d0fa, #fff); text-align: center; }']
+  templateUrl: './daily-video.component.html',
+  styleUrl: './daily-video.component.css'
 })
-export class DailyVideoComponent {}
+export class DailyVideoComponent {
+  readonly stories = GOSPEL_STORIES;
+}

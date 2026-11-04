@@ -1,0 +1,45 @@
+<app-header></app-header>
+<main class="gospel-content">
+  <div class="gospel-page">
+    <header class="page-heading">
+      <p class="eyebrow">Maronite Catholic Formation</p>
+      <h1>Gospel Stories</h1>
+      <p>Browse each story by date and Bible passage, then choose a video or activity.</p>
+    </header>
+
+    <section class="story-grid" aria-label="Gospel stories">
+      @for (story of stories; track story.date + story.name) {
+        <article class="story-card">
+          <p class="story-date"><i class="fa-regular fa-calendar" aria-hidden="true"></i> {{ story.date }}</p>
+          <h2>{{ story.name }}</h2>
+          <p class="story-verse">
+            <strong>Bible verse</strong>
+            <span>{{ story.bibleVerse || 'Not listed' }}</span>
+          </p>
+          <div class="story-videos" [attr.aria-label]="'Videos and activities for ' + story.name">
+            @for (video of story.videos; track video.label + (video.url || '')) {
+              @if (video.url) {
+                <a
+                  class="video-link"
+                  [href]="video.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  [attr.aria-label]="video.label + ' for ' + story.name + ' (opens in a new tab)'">
+                  <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+                  <span>{{ video.label }}</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square external-icon" aria-hidden="true"></i>
+                </a>
+              } @else {
+                <p class="video-unavailable">
+                  <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                  <span>{{ video.label }} — link not included in the calendar.</span>
+                </p>
+              }
+            }
+          </div>
+        </article>
+      }
+    </section>
+  </div>
+</main>
+<app-footer></app-footer>

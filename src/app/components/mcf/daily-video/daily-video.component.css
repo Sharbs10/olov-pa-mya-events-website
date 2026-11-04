@@ -1,0 +1,164 @@
+:host main.gospel-content {
+  display: block;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: clamp(1.25rem, 4vw, 3rem) clamp(1rem, 5vw, 2rem);
+  background: linear-gradient(160deg, #eaf4fd, #fff 60%);
+  color: #17324f;
+}
+
+.gospel-page {
+  width: min(100%, 70rem);
+  margin: 0 auto;
+  padding-bottom: 2rem;
+}
+
+.page-heading {
+  margin-bottom: 1.75rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: #356b96;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  color: #15355b;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 800;
+}
+
+.page-heading > p:last-child {
+  max-width: 42rem;
+  margin: 0.55rem 0 0;
+  color: #526b83;
+  line-height: 1.55;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  align-items: start;
+  gap: 1rem;
+}
+
+.story-card {
+  min-width: 0;
+  padding: 1.1rem;
+  border: 1px solid #d5e4f1;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 0.5rem 1.5rem rgba(21, 53, 91, 0.06);
+}
+
+.story-date {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.55rem;
+  color: #356b96;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.story-card h2 {
+  margin: 0;
+  color: #15355b;
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+.story-verse {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin: 0.8rem 0 1rem;
+  color: #526b83;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.story-verse strong {
+  color: #17324f;
+  font-size: 0.82rem;
+}
+
+.story-videos {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.video-link {
+  display: flex;
+  min-height: 2.9rem;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #c9ddec;
+  border-radius: 0.7rem;
+  background: #f5faff;
+  color: #174e7a;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.video-link > span {
+  min-width: 0;
+  flex: 1;
+}
+
+.video-link > i:first-child {
+  flex: 0 0 auto;
+  font-size: 1.05rem;
+}
+
+.external-icon {
+  flex: 0 0 auto;
+  font-size: 0.78rem;
+}
+
+.video-unavailable {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.7rem 0.75rem;
+  border-radius: 0.7rem;
+  background: #fff9e9;
+  color: #59491f;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.video-unavailable i {
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+}
+
+.video-link:focus-visible {
+  outline: 3px solid #2478bd;
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .video-link:hover {
+    border-color: #28639b;
+    background: #28639b;
+    color: #fff;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-link {
+    transition: none;
+  }
+}

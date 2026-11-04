@@ -16,7 +16,7 @@ describe('ResourcesComponent', () => {
     fixture = TestBed.createComponent(ResourcesComponent);
   });
 
-  it('shows Daily Videos, Quizlet, and MCF Books on the MCF resources page', () => {
+  it('shows Gospel Stories, Quizlet, and MCF Books on the MCF resources page', () => {
     spyOnProperty(TestBed.inject(Router), 'url', 'get').and.returnValue('/mcf/resources');
     fixture.detectChanges();
 
@@ -26,12 +26,12 @@ describe('ResourcesComponent', () => {
       title: link.querySelector('strong')?.textContent?.trim(),
       description: link.querySelector('.resource-copy > span')?.textContent?.trim()
     }))).toEqual([
-      { title: 'Daily Videos', description: 'Watch and reflect together.' },
+      { title: 'Gospel Stories', description: 'Explore Bible stories, verses, videos, and activities.' },
       { title: 'Quizlet', description: 'Review and practice what you learn.' },
       { title: 'MCF Books', description: 'Read and download book chapters.' }
     ]);
     expect(Array.from(links, link => link.getAttribute('href'))).toEqual([
-      '/mcf/daily-video',
+      '/mcf/gospel-stories',
       '/mcf/quizlet',
       '/mcf/books'
     ]);
