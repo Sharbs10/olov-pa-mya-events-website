@@ -53,17 +53,34 @@ h1 {
 }
 
 .chapter-grid a {
+  --chapter-color: #e63946;
   display: flex;
   min-height: 7rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid #d9e6f1;
+  border: 1px solid var(--chapter-color);
   border-radius: 1rem;
-  background: #fff;
-  color: #205a8f;
+  background: var(--chapter-color);
+  color: #fff;
   text-decoration: none;
-  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+  box-shadow: 0 5px 12px color-mix(in srgb, var(--chapter-color), transparent 76%);
+  transition: filter 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.chapter-grid a.chapter-color-1 { --chapter-color: #d62828; }
+.chapter-grid a.chapter-color-2 { --chapter-color: #f27b21; }
+.chapter-grid a.chapter-color-3 { --chapter-color: #d1a800; }
+.chapter-grid a.chapter-color-4 { --chapter-color: #379447; }
+.chapter-grid a.chapter-color-5 { --chapter-color: #168aad; }
+.chapter-grid a.chapter-color-6 { --chapter-color: #3564c8; }
+.chapter-grid a.chapter-color-7 { --chapter-color: #6741a5; }
+.chapter-grid a.chapter-color-8 { --chapter-color: #bf3f83; }
+
+.chapter-grid a:hover {
+  filter: brightness(0.88);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--chapter-color), transparent 62%);
 }
 
 .chapter-label {
@@ -76,12 +93,6 @@ h1 {
   font-size: 2rem;
   font-weight: 850;
   line-height: 1.1;
-}
-
-.chapter-grid a:hover {
-  border-color: #28639b;
-  background: #28639b;
-  color: #fff;
 }
 
 .chapter-grid a:focus-visible {

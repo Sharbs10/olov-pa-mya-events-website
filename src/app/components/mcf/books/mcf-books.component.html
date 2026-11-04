@@ -7,7 +7,7 @@
 
     <nav class="chapter-grid" aria-label="Book chapters">
       @for (chapter of chapters; track chapter) {
-        <a [routerLink]="['/mcf/books', 'ch' + chapter]">
+        <a [routerLink]="['/mcf/books', 'ch' + chapter]" [class]="'chapter-color-' + chapter">
           <span class="chapter-label">CH</span>
           <span class="chapter-number">{{ chapter }}</span>
         </a>
