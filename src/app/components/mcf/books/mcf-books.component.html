@@ -3,13 +3,13 @@
   <section class="books-panel" aria-labelledby="books-title">
     <p class="eyebrow">MCF Resources</p>
     <h1 id="books-title">MCF Books</h1>
-    <p>Select a chapter to read it or download the PDF.</p>
+    <p>Select a grade to read or download its book.</p>
 
-    <nav class="chapter-grid" aria-label="Book chapters">
-      @for (chapter of chapters; track chapter) {
-        <a [routerLink]="['/mcf/books', 'ch' + chapter]" [class]="'chapter-color-' + chapter">
-          <span class="chapter-label">CH</span>
-          <span class="chapter-number">{{ chapter }}</span>
+    <nav class="chapter-grid" aria-label="Grade books">
+      @for (grade of grades; track grade.number) {
+        <a [routerLink]="['/mcf/books', 'ch' + grade.number]" [class]="'chapter-color-' + grade.number">
+          <span class="chapter-number">Grade {{ grade.number }}</span>
+          <span class="grade-title">{{ grade.title }}</span>
         </a>
       }
     </nav>

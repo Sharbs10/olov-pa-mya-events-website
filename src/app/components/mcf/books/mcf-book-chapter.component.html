@@ -1,35 +1,99 @@
 <app-header></app-header>
-<main class="chapter-page">
+<main #chapterPage class="chapter-page" (scroll)="updateCurrentPage()">
   @if (chapterNumber) {
     <header class="chapter-header">
-      <div>
-        <a class="back-link" routerLink="/mcf/books">← All chapters</a>
-        <h1>MCF Books — CH{{ chapterNumber }}</h1>
+      <div class="chapter-title-row">
+        <a class="back-link" routerLink="/mcf/books">← All Grades</a>
+        <h1 [class]="'chapter-color-' + chapterNumber">
+          @if (chapterNumber === 8) {
+            Grade 8: <span class="grade-title-line">OUR MARONITE</span>{{ ' ' }}<span class="grade-title-line">CHURCH HISTORY</span>
+          } @else {
+            Grade {{ chapterNumber }}: {{ gradeTitle }}
+          }
+        </h1>
       </div>
-      <a class="download-button" [href]="pdfPath" [attr.download]="'ch' + chapterNumber + '.pdf'">
-        Download PDF
-      </a>
     </header>
 
     @if (pdfLoading) {
       <section class="missing-message" role="status">
-        <p>Loading chapter PDF…</p>
+        <div class="pdf-loading-spinner" aria-hidden="true"></div>
+        <h2>{{ loadingMessage }}</h2>
+        @if (isPreparingPages) {
+          <progress class="pdf-loading-progress" [attr.max]="totalPageCount"
+            [value]="preparedPageCount" [attr.aria-label]="loadingMessage"></progress>
+          <p>{{ preparedPageCount }} of {{ totalPageCount }} pages prepared</p>
+        } @else if (downloadProgress !== null) {
+          <progress class="pdf-loading-progress" max="100" [value]="downloadProgress"
+            [attr.aria-label]="loadingMessage"></progress>
+          <p>{{ downloadProgress }}% downloaded</p>
+        } @else {
+          <progress class="pdf-loading-progress" [attr.aria-label]="loadingMessage"></progress>
+          <p>The complete PDF is downloading. Controls will be available when all pages are ready.</p>
+        }
       </section>
     } @else if (pdfMissing) {
       <section class="missing-message" role="status">
-        <h2>Chapter PDF not found</h2>
-        <p>
-          Add the chapter file at
-          <code>public/assets/mcf/books/ch{{ chapterNumber }}.pdf</code>
-          to display and download it here.
-        </p>
+        <h2>Could not load chapter PDF</h2>
+        <p>Try downloading the PDF instead.</p>
       </section>
     } @else {
-      <iframe
-        class="pdf-viewer"
-        [src]="pdfUrl"
-        [title]="'MCF book chapter ' + chapterNumber + ' PDF'">
-      </iframe>
+      <div #pdfViewer class="pdf-viewer">
+        <nav class="pdf-toolbar" aria-label="PDF controls">
+          <div class="page-zoom-controls">
+            <div class="page-controls">
+              <button type="button" aria-label="Previous page" [disabled]="currentPage <= 1"
+                (click)="goToPageValue(currentPage - 1)">‹</button>
+              <label>
+                <span class="visually-hidden">Page number</span>
+                <input type="number" min="1" [max]="pages.length" [value]="currentPage"
+                  aria-label="Page number" (change)="goToPage($event)">
+              </label>
+              <span aria-hidden="true">/ {{ pages.length }}</span>
+              <button type="button" aria-label="Next page" [disabled]="currentPage >= pages.length"
+                (click)="goToPageValue(currentPage + 1)">›</button>
+            </div>
+            <div class="zoom-controls">
+              <button type="button" aria-label="Zoom out" [disabled]="zoomFactor <= 0.5"
+                (click)="zoomBy(-0.25)">−</button>
+              <span class="zoom-level" aria-live="polite">{{ zoomPercent }}%</span>
+              <button type="button" aria-label="Zoom in" [disabled]="zoomFactor >= 2.5"
+                (click)="zoomBy(0.25)">+</button>
+            </div>
+          </div>
+          <div class="viewer-options">
+            <button type="button" class="fit-button" (click)="fitToWidth()">Fit width</button>
+            <a class="pdf-download-button" [class.disabled]="pdfLoading" [attr.aria-disabled]="pdfLoading"
+              [attr.tabindex]="pdfLoading ? -1 : null" [href]="pdfPath"
+              [attr.download]="'Grade ' + chapterNumber + ' - ' + gradeTitle + '.pdf'">
+              Download
+            </a>
+            <button type="button" class="fullscreen-button" [attr.aria-pressed]="isFullscreen"
+              [attr.aria-label]="isFullscreen ? 'Exit full screen' : 'Full screen'"
+              (click)="toggleFullscreen()">
+              {{ isFullscreen ? 'Exit full screen' : 'Full screen' }}
+            </button>
+          </div>
+        </nav>
+        <div #pdfContainer class="pdf-viewport" (scroll)="updateCurrentPage()">
+          <div class="pdf-document">
+            @for (page of pages; track page.number) {
+              <article
+                #pdfPage
+                class="pdf-page"
+                [style.aspect-ratio]="page.aspectRatio"
+                [style.width.px]="pageWidth"
+                [attr.aria-label]="'Page ' + page.number">
+                <canvas
+                  #pageCanvas
+                  [attr.data-page-number]="page.number"
+                  role="img"
+                  [attr.aria-label]="'Page ' + page.number">
+                </canvas>
+              </article>
+            }
+          </div>
+        </div>
+      </div>
     }
   } @else {
     <section class="missing-message" role="alert">
@@ -39,4 +103,3 @@
     </section>
   }
 </main>
-<app-footer></app-footer>

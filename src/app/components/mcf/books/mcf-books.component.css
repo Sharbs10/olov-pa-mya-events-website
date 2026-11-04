@@ -9,13 +9,15 @@
   min-height: 0;
   flex: 1;
   place-items: center;
-  padding: clamp(1.5rem, 5vw, 3rem);
+  box-sizing: border-box;
+  padding: clamp(1rem, 3vw, 2.5rem);
   background: linear-gradient(to bottom, #a6d0fa, #fff);
 }
 
 .books-panel {
   width: min(100%, 54rem);
-  padding: clamp(1.5rem, 5vw, 3rem);
+  box-sizing: border-box;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
   border: 1px solid #ffffffdd;
   border-radius: 1.25rem;
   background: #ffffffdf;
@@ -49,16 +51,21 @@ h1 {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .chapter-grid a {
   --chapter-color: #e63946;
   display: flex;
+  min-width: 0;
   min-height: 7rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.1rem;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  text-align: center;
   border: 1px solid var(--chapter-color);
   border-radius: 1rem;
   background: var(--chapter-color);
@@ -68,7 +75,7 @@ h1 {
   transition: filter 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
-.chapter-grid a.chapter-color-1 { --chapter-color: #d62828; }
+.chapter-grid a.chapter-color-1 { --chapter-color: #b32632; }
 .chapter-grid a.chapter-color-2 { --chapter-color: #f27b21; }
 .chapter-grid a.chapter-color-3 { --chapter-color: #d1a800; }
 .chapter-grid a.chapter-color-4 { --chapter-color: #379447; }
@@ -95,19 +102,195 @@ h1 {
   line-height: 1.1;
 }
 
+.grade-title {
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
 .chapter-grid a:focus-visible {
   outline: 3px solid #2478bd;
   outline-offset: 3px;
 }
 
 @media (max-width: 520px) {
+  .books-page {
+    place-items: center;
+    padding: 0.4rem;
+    overflow: hidden;
+  }
+
+  .books-panel {
+    padding: 0.65rem;
+    border-radius: 0.9rem;
+  }
+
+  .eyebrow {
+    margin-bottom: 0.15rem;
+    font-size: 0.65rem;
+  }
+
+  h1 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem);
+  }
+
+  .books-panel > p:not(.eyebrow) {
+    margin-top: 0.25rem;
+    font-size: 0.82rem;
+  }
+
   .chapter-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.7rem;
-    margin-top: 1.4rem;
+    align-content: start;
+    gap: 0.45rem;
+    margin-top: 0.65rem;
   }
 
   .chapter-grid a {
     min-height: 5.5rem;
+    padding: 0.35rem;
+    border-radius: 1rem;
+  }
+
+  .chapter-number {
+    font-size: clamp(1.15rem, 5vw, 1.5rem);
+  }
+
+  .grade-title {
+    font-size: 0.68rem;
+    line-height: 1.15;
+  }
+}
+
+@media (max-height: 650px) {
+  .books-page {
+    padding: 0.35rem;
+  }
+
+  .books-panel {
+    padding: 0.6rem;
+  }
+
+  .chapter-grid {
+    gap: 0.45rem;
+    margin-top: 0.6rem;
+  }
+
+  .chapter-grid a {
+    min-height: 4rem;
+    padding: 0.4rem;
+  }
+
+  .chapter-number {
+    font-size: 1.4rem;
+  }
+
+  .grade-title {
+    font-size: 0.7rem;
+    line-height: 1.15;
+  }
+}
+
+@media (max-height: 650px) and (max-width: 520px) {
+  .chapter-grid a {
+    min-height: 3.25rem;
+    padding: 0.25rem;
+  }
+
+  .chapter-number {
+    font-size: 1.15rem;
+  }
+
+  .grade-title {
+    font-size: 0.64rem;
+  }
+}
+
+@media (max-height: 520px) {
+  .books-page {
+    padding: 0.2rem;
+  }
+
+  .books-panel {
+    padding: 0.45rem;
+  }
+
+  .eyebrow {
+    margin-bottom: 0.1rem;
+    font-size: 0.58rem;
+  }
+
+  h1 {
+    font-size: clamp(1.1rem, 5vw, 1.35rem);
+  }
+
+  .books-panel > p:not(.eyebrow) {
+    margin-top: 0.15rem;
+    font-size: 0.72rem;
+  }
+
+  .chapter-grid {
+    gap: 0.25rem;
+    margin-top: 0.35rem;
+  }
+
+  .chapter-grid a {
+    min-height: 2.75rem;
+    padding: 0.2rem;
+  }
+
+  .chapter-number {
+    font-size: 1.05rem;
+  }
+
+  .grade-title {
+    font-size: 0.6rem;
+    line-height: 1.05;
+  }
+}
+
+@media (max-width: 520px) {
+  .books-page {
+    place-items: stretch;
+    padding: 0;
+  }
+
+  .books-panel {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    padding: 0.65rem;
+    border-radius: 0;
+  }
+
+  .chapter-grid {
+    flex: 1;
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+  }
+
+  .chapter-grid a {
+    min-height: 0;
+  }
+}
+
+@media (min-width: 521px) {
+  .books-panel {
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(0.5rem, 2vh, 1.25rem);
+  }
+
+  .chapter-grid {
+    width: min(100%, 70rem);
+    align-self: center;
+    margin-top: 1rem;
   }
 }

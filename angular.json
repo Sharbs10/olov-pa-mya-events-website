@@ -32,6 +32,11 @@
                 ],
                 "output": "/"
               },
+              {
+                "glob": "pdf.worker.min.mjs",
+                "input": "node_modules/pdfjs-dist/build",
+                "output": "/assets/pdfjs"
+              },
               "src/favicon.ico"
             ],
             "styles": [
@@ -100,6 +105,11 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               "src/assets",
+              {
+                "glob": "pdf.worker.min.mjs",
+                "input": "node_modules/pdfjs-dist/build",
+                "output": "/assets/pdfjs"
+              },
               "src/favicon.ico"
             ],
             "styles": [

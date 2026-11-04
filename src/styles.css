@@ -596,8 +596,8 @@ app-root .content > * > main {
   }
 
   app-root .content > * > app-footer .site-footer {
-    min-height: 64px;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    min-height: 56px;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
 }
