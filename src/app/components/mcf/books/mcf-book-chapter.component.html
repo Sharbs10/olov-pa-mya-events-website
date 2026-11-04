@@ -11,7 +11,11 @@
       </a>
     </header>
 
-    @if (pdfMissing) {
+    @if (pdfLoading) {
+      <section class="missing-message" role="status">
+        <p>Loading chapter PDF…</p>
+      </section>
+    } @else if (pdfMissing) {
       <section class="missing-message" role="status">
         <h2>Chapter PDF not found</h2>
         <p>

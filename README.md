@@ -92,6 +92,10 @@ The app currently reads calendars using a Google API key without signing a user 
 
 Calendar views and downloads show past, present, and future events from the selected community's calendar. The Events page shows only events happening today or later. Each community page automatically uses its configured ID. If an ID is left blank, that community's calendar reports that its ID is not configured.
 
+## MCF book PDFs
+
+The MCF chapter PDFs stay in `public/assets/mcf/books` in the repository but are excluded from the Cloudflare Pages build because chapters 2–8 exceed Pages' 25 MiB per-file limit. The chapter reader loads them from GitHub Raw, so this repository must be public for visitors to view or download them. If the repository or its default branch changes, update the PDF base URL in `src/app/components/mcf/books/mcf-book-chapter.component.ts`.
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
