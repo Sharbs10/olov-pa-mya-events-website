@@ -16,7 +16,7 @@ describe('ResourcesComponent', () => {
     fixture = TestBed.createComponent(ResourcesComponent);
   });
 
-  it('shows Gospel Stories, Quizlet, and MCF Books on the MCF resources page', () => {
+  it('shows MCF learning resources and the Bible World Realm on the resources page', () => {
     spyOnProperty(TestBed.inject(Router), 'url', 'get').and.returnValue('/mcf/resources');
     fixture.detectChanges();
 
@@ -28,12 +28,14 @@ describe('ResourcesComponent', () => {
     }))).toEqual([
       { title: 'Gospel Stories', description: 'Explore Bible stories, verses, videos, and activities.' },
       { title: 'Quizlet', description: 'Review and practice what you learn.' },
-      { title: 'MCF Books', description: 'Read and download book chapters.' }
+      { title: 'MCF Books', description: 'Read and download book chapters.' },
+      { title: 'MC Bible World', description: 'Explore the Minecraft Bedrock Realm and find out how to join.' }
     ]);
     expect(Array.from(links, link => link.getAttribute('href'))).toEqual([
       '/mcf/gospel-stories',
       '/mcf/quizlet',
-      '/mcf/books'
+      '/mcf/books',
+      '/mcf/mc-bible-world'
     ]);
   });
 

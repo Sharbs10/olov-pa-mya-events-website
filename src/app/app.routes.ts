@@ -11,6 +11,7 @@ import { DailyVideoComponent } from './components/mcf/daily-video/daily-video.co
 import { QuizletComponent } from './components/mcf/quizlet/quizlet.component';
 import { McfBooksComponent } from './components/mcf/books/mcf-books.component';
 import { McfBookChapterComponent } from './components/mcf/books/mcf-book-chapter.component';
+import { McBibleWorldComponent } from './components/mcf/mc-bible-world/mc-bible-world.component';
 import { SpiritualComponent } from './components/mya/spiritual/spiritual.component';
 import { ServiceComponent } from './components/mya/service/service.component';
 import { SocialComponent } from './components/mya/social/social.component';
@@ -37,6 +38,7 @@ export const routes: Routes = [
   { path: 'mcf/quizlet', component: QuizletComponent },
   { path: 'mcf/books', component: McfBooksComponent },
   { path: 'mcf/books/:chapter', component: McfBookChapterComponent },
+  { path: 'mcf/mc-bible-world', component: McBibleWorldComponent },
   { path: 'mcf/events', component: EventsComponent },
   { path: 'mcf/calendar', component: CalendarComponent },
   { path: 'mcf/resources', component: ResourcesComponent },

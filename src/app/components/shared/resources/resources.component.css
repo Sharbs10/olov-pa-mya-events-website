@@ -92,11 +92,38 @@
   color: #6d8eaa;
 }
 
+.resource-links .minecraft-world-link {
+  position: relative;
+  min-height: 8rem;
+  overflow: hidden;
+  border-color: #405b2c;
+  background: linear-gradient(90deg, rgba(20, 28, 17, 0.88), rgba(20, 28, 17, 0.28)),
+    url('/assets/images/mc-bible-world.png') center 43% / cover;
+  color: #fff;
+}
+
+.minecraft-world-link .resource-copy,
+.minecraft-world-link .resource-arrow {
+  position: relative;
+  z-index: 1;
+}
+
+.minecraft-world-link .resource-copy > span,
+.minecraft-world-link .resource-arrow {
+  color: rgba(255, 255, 255, 0.88);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .resource-links a:hover {
     border-color: #28639b;
     background: #28639b;
     color: #fff;
+  }
+
+  .resource-links .minecraft-world-link:hover {
+    border-color: #668b3f;
+    background: linear-gradient(90deg, rgba(20, 28, 17, 0.94), rgba(20, 28, 17, 0.48)),
+      url('/assets/images/mc-bible-world.png') center 43% / cover;
   }
 
   .resource-links a:hover .resource-icon {

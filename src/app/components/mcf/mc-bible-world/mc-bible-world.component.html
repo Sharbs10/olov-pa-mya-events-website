@@ -1,0 +1,124 @@
+<app-header></app-header>
+<main class="realm-page">
+  <header class="realm-hero">
+    <p class="realm-eyebrow">MCF Minecraft Bedrock Realm</p>
+    <h1>MC Bible World</h1>
+    <p>A shared Minecraft world for building, exploring, and learning together.</p>
+  </header>
+
+  <div class="realm-content">
+    <section class="realm-section" aria-labelledby="realm-about-title">
+      <h2 id="realm-about-title"><i class="fa-solid fa-cube" aria-hidden="true"></i> What this is</h2>
+      <p>
+        MCF Bible World is a Minecraft Bedrock Realm for the MCF grades 5th-8th. 
+      </p>
+        <span class="realm-placeholder">The students will be able to creatively build their favorite Bible stories.</span>
+    </section>
+
+    <section class="realm-section" aria-labelledby="realm-join-title">
+      <h2 id="realm-join-title"><i class="fa-solid fa-door-open" aria-hidden="true"></i> How to join</h2>
+      <ol>
+        <li>Parents will be emailed a password to unlock the Realm link.</li>
+      </ol>
+      <p class="realm-security-note" role="note">
+        This password check is a convenience only. The Realm link is not securely restricted, so please only share it with invited families.
+      </p>
+      @if (!isRealmLinkRevealed) {
+        <form class="realm-unlock-form" (ngSubmit)="unlockRealmLink()">
+          <label for="realm-password">Password</label>
+          <input
+            id="realm-password"
+            name="realmPassword"
+            type="password"
+            [(ngModel)]="password"
+            autocomplete="off"
+            required
+            [attr.aria-invalid]="passwordError ? 'true' : null"
+            [attr.aria-describedby]="passwordError ? 'realm-password-error' : null">
+          @if (passwordError) {
+            <p id="realm-password-error" class="realm-error" role="alert">{{ passwordError }}</p>
+          }
+          <button type="submit">Reveal Realm link</button>
+        </form>
+      } @else {
+        <div class="realm-invite">
+          <p>Click the Realm link or copy button to copy the invite link.</p>
+          <button class="realm-invite-code" type="button" (click)="copyRealmLink()">
+            {{ realmInviteLink }}
+          </button>
+          <button class="realm-copy-button" type="button" (click)="copyRealmLink()">
+            <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy Realm link
+          </button>
+          <p class="realm-copy-status" role="status" aria-live="polite">{{ copyStatus }}</p>
+        </div>
+      }
+    </section>
+
+    <section class="realm-section" aria-labelledby="realm-expectations-title">
+      <h2 id="realm-expectations-title"><i class="fa-solid fa-people-group" aria-hidden="true"></i> Expectations</h2>
+      <ul>
+        <li>Be kind and respectful to everyone in the Realm.</li>
+        <li>Respect other players' builds and belongings; No Griefing other students' builds.</li>
+        <li>Follow any guidance from the Realm host and MCF leaders.</li>
+        <li>Feel free to work on your builds throughout the week. We will have a show and tell at the end of class to share your progress.</li>
+      </ul>
+    </section>
+
+    <section class="realm-section" aria-labelledby="realm-specs-title">
+      <h2 id="realm-specs-title"><i class="fa-solid fa-computer" aria-hidden="true"></i> Specs to be able to join</h2>
+      <ul>
+        <li>A device that supports Minecraft Bedrock Edition.</li>
+        <li>Minecraft Bedrock Edition installed and updated.</li>
+        <li>An internet connection and a Microsoft account to play online.</li>
+      </ul>
+      <h3>Consoles</h3>
+      <div class="console-accordions">
+        <details class="console-accordion">
+          <summary>Nintendo Switch</summary>
+          <div class="console-details">
+            <p><strong>Game: </strong> <a href="https://www.nintendo.com/us/store/products/minecraft-switch/" target="_blank" rel="noopener noreferrer">Minecraft Bedrock Edition</a></p>
+            <p><strong>Online service: </strong> <a href="https://www.nintendo.com/us/online/" target="_blank" rel="noopener noreferrer">Nintendo Switch Online</a> is required for online multiplayer.</p>
+            <p><strong>Previously published price:</strong> $3.99/month or $19.99/year for standard individual membership.</p>
+          </div>
+        </details>
+        <details class="console-accordion">
+          <summary>PlayStation 4 and PlayStation 5</summary>
+          <div class="console-details">
+            <p><strong>Game: </strong> <a href="https://www.playstation.com/en-us/games/minecraft/" target="_blank" rel="noopener noreferrer">Minecraft Bedrock Edition</a></p>
+            <p><strong>Online service: </strong> <a href="https://www.playstation.com/en-us/ps-plus/" target="_blank" rel="noopener noreferrer">PlayStation Plus Essential</a> is required for online multiplayer.</p>
+            <p><strong>Previously published price:</strong> $9.99/month or $79.99/year.</p>
+          </div>
+        </details>
+        <details class="console-accordion">
+          <summary>Xbox One and Xbox Series X|S</summary>
+          <div class="console-details">
+            <p><strong>Game:</strong> <a href="https://www.xbox.com/en-US/games/minecraft" target="_blank" rel="noopener noreferrer">Minecraft Bedrock Edition</a></p>
+            <p><strong>Online service: </strong> <a href="https://www.xbox.com/en-US/xbox-game-pass/compare" target="_blank" rel="noopener noreferrer">Xbox Game Pass Essential</a> is required for online multiplayer.</p>
+            <p><strong>Previously published price:</strong> $9.99/month.</p>
+          </div>
+        </details>
+        <details class="console-accordion">
+          <summary>PC (Personal Computer)</summary>
+          <div class="console-details">
+            <p><strong>Game: </strong> <a href="https://www.minecraft.net/en-us/store/minecraft-java-bedrock-edition-pc" target="_blank" rel="noopener noreferrer">Minecraft Bedrock Edition</a></p>
+            <p><strong>Online service:</strong> None.</p>
+          </div>
+        </details>
+      </div>
+      <p class="realm-placeholder">
+        Prices above are US rates previously published and are not confirmed as current. Check each linked service for current prices.
+        These console online-service fees are separate from Minecraft and the Realm host's Realms subscription; invited players do not need to buy their own Realms subscription.
+      </p>
+    </section>
+
+    <section class="realm-section" aria-labelledby="realm-disclaimer-title">
+      <h2 id="realm-disclaimer-title"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Disclaimer</h2>
+      <p>The students will have time to work on their builds during class if they are unable to work on them during the week.</p>
+    </section>
+  </div>
+
+  <a class="realm-back-link" routerLink="/mcf/resources">
+    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to MCF Resources
+  </a>
+</main>
+<app-footer></app-footer>
